@@ -40,11 +40,11 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 };
 
 export const createTrip = async (trip) => {
-  const newTripRef = firestore.doc('trips');
+  console.log(trip);
+
+  const newTripRef = firestore.collection(`trips`).doc();
   try {
-    await newTripRef.set({
-      ...trip,
-    });
+    await newTripRef.set(trip);
     return newTripRef;
   } catch (error) {
     console.log('Error Creating Trip', error.message);

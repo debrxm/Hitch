@@ -21,6 +21,7 @@ class CreateRide extends Component {
       carType: '',
       vacantSeats: '',
       errorMessage: '',
+      isSuccess: false,
       isLoading: false,
     };
   }
@@ -52,7 +53,6 @@ class CreateRide extends Component {
         passangers: [],
       };
       await createTrip(tripData);
-
       this.setState({
         pickUpPoint: '',
         destination: '',
@@ -60,10 +60,15 @@ class CreateRide extends Component {
         time: '',
         carType: '',
         vacantSeats: '',
+        isSucces: true,
+        isLoading: false,
       });
-    } catch (error) {}
-
-    // this.setState({ pickUpPoint: '', destination: '' });
+    } catch (error) {
+      this.setState({
+        isLoading: !this.setState.isLoading,
+        errorMessage: 'Failed Try Again',
+      });
+    }
   };
   handleChange = (event) => {
     const { name, value } = event.target;
@@ -81,15 +86,19 @@ class CreateRide extends Component {
       vacantSeats,
       carType,
       errorMessage,
+      isSuccess,
       isLoading,
     } = this.state;
     return (
       <div className="create-ride">
+        {isSuccess ? (
+          <span className="success">Trip Successfully Created</span>
+        ) : null}
+        {errorMessage !== '' ? (
+          <span className="error">{errorMessage}</span>
+        ) : null}
         <div>
           <h3 className="title">CREATE RIDE</h3>
-          {errorMessage !== '' ? (
-            <span className="error">{errorMessage}</span>
-          ) : null}
           <form onSubmit={this.handleSubmit}>
             <FormInput
               type="text"
