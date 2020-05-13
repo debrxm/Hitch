@@ -38,6 +38,19 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   }
   return userRef;
 };
+
+export const createTrip = async (trip) => {
+  const newTripRef = firestore.doc('trips');
+  try {
+    await newTripRef.set({
+      ...trip,
+    });
+    return newTripRef;
+  } catch (error) {
+    console.log('Error Creating Trip', error.message);
+  }
+};
+
 const provider = new firebase.auth.GoogleAuthProvider();
 provider.setCustomParameters({ prompt: 'select_account' });
 

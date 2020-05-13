@@ -17,7 +17,11 @@
   justify-content: center;
   align-items: center;
   margin: auto;
-
+  img {
+    height: 20px;
+    width: 20px;
+    margin-left: 10px;
+  }
   &:hover {
     background-color: white;
     color: black;

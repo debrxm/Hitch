@@ -12,13 +12,14 @@ class FindRide extends Component {
     this.state = {
       location: '',
       destination: '',
+      numberOfPassanger: '',
       errorMessage: '',
       isLoading: false,
     };
   }
   handleSubmit = async (event) => {
     event.preventDefault();
-    const { location, destination } = this.state;
+    const { location, destination, numberOfPassanger } = this.state;
 
     try {
       this.setState({ isLoading: true });
@@ -36,7 +37,13 @@ class FindRide extends Component {
     });
   };
   render() {
-    const { location, destination, errorMessage, isLoading } = this.state;
+    const {
+      location,
+      destination,
+      errorMessage,
+      isLoading,
+      numberOfPassanger,
+    } = this.state;
     return (
       <div className="find-ride">
         <div>
@@ -60,6 +67,14 @@ class FindRide extends Component {
               required
               handleChange={this.handleChange}
               label="Destination"
+            />
+            <FormInput
+              type="number"
+              name="numberOfPassanger"
+              value={numberOfPassanger}
+              required
+              handleChange={this.handleChange}
+              label="Number Of Passanger"
             />
             <div className="buttons">
               <CustomButton type="button" onClick={this.handleSubmit}>

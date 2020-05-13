@@ -10,22 +10,48 @@
   z-index: 9;
   color: #ffffff;
   display: flex;
-  flex-direction: column-reverse;
-  text-align: center;
+  flex-direction: column;
+  justify-content: space-between;
+  // text-align: center;
   padding: 20px;
+  opacity: 0;
 
   h3 {
     text-transform: uppercase;
     font-weight: 600;
     margin: auto;
   }
-  .user {
+  .links {
+    text-align: left;
+    li {
+      list-style: none;
+      .link {
+        font-size: 15px;
+        font-weight: 400;
+        letter-spacing: 2px;
+        padding: 5px 20px;
+        margin: 15px 0;
+      }
+    }
+  }
+  .logout {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    flex-wrap: wrap;
+    span {
+      text-transform: uppercase;
+      font-size: 15px;
+    }
     img {
       cursor: pointer;
       height: 20px;
+      margin-left: 10px;
     }
   }
 }
 .active {
   transform: translateX(0px);
+  opacity: 1;
 }

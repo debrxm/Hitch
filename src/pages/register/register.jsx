@@ -16,22 +16,23 @@ class Register extends Component {
     this.state = {
       displayName: '',
       email: '',
+      phone: '',
       password: '',
       confirmPassword: '',
       errorMessage: '',
-      isLoading: false
+      isLoading: false,
     };
   }
-  handleChange = e => {
+  handleChange = (e) => {
     const { name, value } = e.target;
     this.setState({ [name]: value, errorMessage: '' });
   };
-  handleSubmit = async e => {
+  handleSubmit = async (e) => {
     e.preventDefault();
-    const { displayName, email, password, confirmPassword } = this.state;
+    const { displayName, email, phone, password, confirmPassword } = this.state;
     if (password !== confirmPassword) {
       this.setState({
-        errorMessage: `Password did not match!`
+        errorMessage: `Password did not match!`,
       });
       return;
     }
@@ -41,40 +42,42 @@ class Register extends Component {
         email,
         password
       );
-      await createUserProfileDocument(user, { displayName });
+      await createUserProfileDocument(user, { displayName, phone });
       this.setState({ isSuccess: true });
     } catch (error) {
       error.code === 'auth/email-already-in-use'
         ? this.setState({
             isLoading: false,
             errorMessage:
-              'The email address is already in use by another account'
+              'The email address is already in use by another account',
           })
         : error.code === 'auth/weak-password'
         ? this.setState({
             isLoading: false,
-            errorMessage: 'Password should be at least 6 characters'
+            errorMessage: 'Password should be at least 6 characters',
           })
         : this.setState({
             isLoading: false,
-            errorMessage: 'Shit just got real'
+            errorMessage: 'Shit just got real',
           });
     }
     this.setState({
       displayName: '',
       email: '',
+      phone: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
     });
   };
   render() {
     const {
       displayName,
       email,
+      phone,
       password,
       confirmPassword,
       errorMessage,
-      isLoading
+      isLoading,
     } = this.state;
     return (
       <div className="register">
@@ -88,13 +91,23 @@ class Register extends Component {
               type="text"
               name="displayName"
               value={displayName}
+              required
               label="Name"
+              onChange={this.handleChange}
+            />
+            <FormInput
+              type="number"
+              name="phone"
+              value={phone}
+              required
+              label="Phone Number"
               onChange={this.handleChange}
             />
             <FormInput
               type="email"
               name="email"
               value={email}
+              required
               label="Email"
               onChange={this.handleChange}
             />
@@ -102,6 +115,7 @@ class Register extends Component {
               type="password"
               name="password"
               value={password}
+              required
               label="Password"
               onChange={this.handleChange}
             />
@@ -109,6 +123,7 @@ class Register extends Component {
               type="password"
               name="confirmPassword"
               value={confirmPassword}
+              required
               label="Confirm password"
               onChange={this.handleChange}
             />
@@ -129,8 +144,8 @@ class Register extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user))
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
 });
 
 export default withRouter(connect(null, mapDispatchToProps)(Register));

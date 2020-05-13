@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { Link, withRouter } from 'react-router-dom';
 import FormInput from '../../components/form-input/form-input';
+import { createTrip } from '../../firebase/firebase.utils';
 import CustomButton from '../../components/custom-button/custom-button';
 import loader from '../../assets/loader.gif';
 import left from '../../assets/left.svg';
@@ -10,23 +14,56 @@ class CreateRide extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      location: '',
+      pickUpPoint: '',
       destination: '',
+      date: '',
+      time: '',
+      carType: '',
+      vacantSeats: '',
       errorMessage: '',
       isLoading: false,
     };
   }
   handleSubmit = async (event) => {
     event.preventDefault();
-    const { location, destination } = this.state;
+    const {
+      pickUpPoint,
+      destination,
+      date,
+      time,
+      vacantSeats,
+      carType,
+    } = this.state;
 
     try {
       this.setState({ isLoading: true });
+      const tripData = {
+        driver: {
+          name: this.props.currentUser.displayName,
+          phone: this.props.currentUser.phone,
+          email: this.props.currentUser.email,
+        },
+        pickUpPoint,
+        destination,
+        date,
+        time,
+        vacantSeats,
+        carType,
+        passangers: [],
+      };
+      await createTrip(tripData);
 
-      this.setState({ location: '', destination: '' });
+      this.setState({
+        pickUpPoint: '',
+        destination: '',
+        date: '',
+        time: '',
+        carType: '',
+        vacantSeats: '',
+      });
     } catch (error) {}
 
-    // this.setState({ location: '', destination: '' });
+    // this.setState({ pickUpPoint: '', destination: '' });
   };
   handleChange = (event) => {
     const { name, value } = event.target;
@@ -36,7 +73,16 @@ class CreateRide extends Component {
     });
   };
   render() {
-    const { location, destination, errorMessage, isLoading } = this.state;
+    const {
+      pickUpPoint,
+      destination,
+      date,
+      time,
+      vacantSeats,
+      carType,
+      errorMessage,
+      isLoading,
+    } = this.state;
     return (
       <div className="create-ride">
         <div>
@@ -47,11 +93,43 @@ class CreateRide extends Component {
           <form onSubmit={this.handleSubmit}>
             <FormInput
               type="text"
-              name="location"
-              value={location}
+              name="pickUpPoint"
+              value={pickUpPoint}
               required
               handleChange={this.handleChange}
-              label="Location"
+              label="Pick Up Point"
+            />
+            <FormInput
+              type="date"
+              name="date"
+              value={date}
+              required
+              handleChange={this.handleChange}
+              label=""
+            />
+            <FormInput
+              type="time"
+              name="time"
+              value={time}
+              required
+              handleChange={this.handleChange}
+              label=""
+            />
+            <FormInput
+              type="text"
+              name="carType"
+              value={carType}
+              required
+              handleChange={this.handleChange}
+              label="Car Type"
+            />
+            <FormInput
+              type="number"
+              name="vacantSeats"
+              value={vacantSeats}
+              required
+              handleChange={this.handleChange}
+              label="Vacant Seats"
             />
             <FormInput
               type="text"
@@ -77,5 +155,7 @@ class CreateRide extends Component {
     );
   }
 }
-
-export default withRouter(CreateRide);
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+});
+export default withRouter(connect(mapStateToProps)(CreateRide));
