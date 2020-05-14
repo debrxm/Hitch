@@ -26,6 +26,29 @@ $shadow: 0px 3px 5px rgba(124, 124, 124, 0.747);
       list-style: none;
     }
   }
+  .btn {
+    width: auto;
+    height: 35px;
+    letter-spacing: 0.5px;
+    padding: 0 20px;
+    font-size: 12px;
+    background-color: black;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bolder;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // margin-top: 10px;
+
+    &:hover {
+      background-color: white;
+      color: black;
+      border: 1px solid black;
+    }
+  }
   form {
     // width: 110px;
     margin-top: 15px;
@@ -48,29 +71,6 @@ $shadow: 0px 3px 5px rgba(124, 124, 124, 0.747);
       margin: 0 5px;
       &:focus {
         font-size: 15px;
-      }
-    }
-    .btn {
-      width: auto;
-      height: 35px;
-      letter-spacing: 0.5px;
-      padding: 0 20px;
-      font-size: 12px;
-      background-color: black;
-      color: white;
-      text-transform: uppercase;
-      font-weight: bolder;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      // margin-top: 10px;
-
-      &:hover {
-        background-color: white;
-        color: black;
-        border: 1px solid black;
       }
     }
   }

@@ -6,17 +6,32 @@ import { selectCurrentUser } from '../../redux/user/user.selectors';
 import CreateRide from '../../pages/create-ride/create-ride';
 import FindRide from '../../pages/find-ride/find-ride';
 import Footer from '../../components/footer/footer';
-import home from '../../assets/home.gif';
+import { firestore } from '../../firebase/firebase.utils';
+import TripPreview from '../../components/trip-preview/trip-preview';
 import './homepage.scss';
 
 class Homepage extends Component {
-  componentDidMount() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const lat = position.coords.latitude;
-        const long = position.coords.longitude;
+  state = {
+    trips: [],
+  };
+  async componentDidMount() {
+    // if (navigator.geolocation) {
+    //   navigator.geolocation.getCurrentPosition((position) => {
+    //     const lat = position.coords.latitude;
+    //     const long = position.coords.longitude;
+    //   });
+    // }
+    const tripRef = firestore.collection('trips').orderBy('date', 'asc');
+    tripRef.onSnapshot((snapshot) => {
+      const trips = [];
+      snapshot.docs.forEach((doc) => {
+        if (doc.data().vacantSeats !== 0) {
+          trips.push(doc.data());
+        }
       });
-    }
+      this.setState({ trips });
+      console.log(this.state.trips);
+    });
   }
 
   render() {
@@ -25,6 +40,11 @@ class Homepage extends Component {
         {/* <div className="landing">
           <img src={home} alt="home" />
         </div> */}
+        <div className="container">
+          {this.state.trips.length !== 0
+            ? this.state.trips.map((trip, index) => <TripPreview trip={trip} />)
+            : null}
+        </div>
         <Footer />
       </div>
     );

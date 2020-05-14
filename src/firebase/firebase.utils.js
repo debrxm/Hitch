@@ -51,14 +51,23 @@ export const createTrip = async (trip, id) => {
   }
 };
 
-export const updateTrip = async (tripId, numberOfPassanger) => {
+export const updateTrip = async (tripId, numberOfPassanger, user) => {
   const tripRef = firestore.doc(`trips/${tripId}`);
+  const userData = {
+    id: user.id,
+    name: user.displayName,
+    phone: user.phone,
+    email: user.email,
+  };
   const snapShot = await tripRef.get();
   if (snapShot.exists) {
-    console.log(snapShot.data());
+    let passangers = [];
+    passangers = snapShot.data().passangers;
+    passangers.push(userData);
     try {
       await tripRef.update({
         vacantSeats: snapShot.data().vacantSeats - numberOfPassanger,
+        passangers: passangers,
       });
       return tripRef;
     } catch (error) {

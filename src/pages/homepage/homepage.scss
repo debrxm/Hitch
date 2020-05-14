@@ -1,8 +1,11 @@
-// .home {
-//   .landing {
-//     max-width: 414px;
-//     img {
-//       width: 100%;
-//     }
-//   }
-// }
+.home {
+  //   background-image: url('../../assets/home.gif');
+  //   background-size: cover;
+  height: 100%;
+  width: 414px;
+  .container {
+    padding: 0 20px;
+  }
+  .landing {
+  }
+}

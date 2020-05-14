@@ -28,14 +28,14 @@ class FindRide extends Component {
       const tripRef = firestore
         .collection(`trips`)
         .where('destination', '==', `${destination}`);
-      tripRef.get().then((querySnapshot) => {
+      tripRef.onSnapshot((snapshot) => {
+        console.log(snapshot.docs);
         const trips = [];
-        querySnapshot.forEach((doc) => {
+        snapshot.docs.forEach((doc) => {
           trips.push(doc.data());
         });
         this.props.setFoundTrip(trips);
       });
-
       this.setState({
         location: '',
         destination: '',

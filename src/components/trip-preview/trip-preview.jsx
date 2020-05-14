@@ -22,24 +22,24 @@ const TripPreview = ({
   const handleJoinTrip = async (e) => {
     e.preventDefault();
     if (state.numberOfPassanger) {
-      await updateTrip(id, state.numberOfPassanger);
-      // const { displayName, phone, email } = currentUser;
-      // // const url = 'https://treep-back-end.herokuapp.com/jointrip';
-      // const url = 'http://localhost:8080/jointrip';
-      // const messageHtml = Message({
-      //   displayName,
-      //   phone,
-      //   email,
-      //   destination,
-      //   date,
-      //   driver,
-      // });
-      // const messageToSend = {
-      //   wmail: driver.email,
-      //   subject: `New Message From Treep`,
-      //   html: messageHtml,
-      // };
-      // PostFetch(url, messageToSend);
+      await updateTrip(id, state.numberOfPassanger, currentUser);
+      const { displayName, phone, email } = currentUser;
+      // const url = 'https://treep-back-end.herokuapp.com/jointrip';
+      const url = 'http://localhost:8080/jointrip';
+      const messageHtml = Message({
+        displayName,
+        phone,
+        email,
+        destination,
+        date,
+        driver,
+      });
+      const messageToSend = {
+        email: driver.email,
+        subject: `New Message From Treep`,
+        html: messageHtml,
+      };
+      PostFetch(url, messageToSend);
     }
   };
   const handleChange = (event) => {
@@ -59,18 +59,24 @@ const TripPreview = ({
         <li>Vacant Seat (s): {vacantSeats}</li>
         <li>Car Type: {carType}</li>
       </ul>
-      <form onSubmit={handleJoinTrip}>
-        <input
-          type="number"
-          className="form-input"
-          name="numberOfPassanger"
-          value={state.numberOfPassanger}
-          placeholder="No of passanger"
-          max={vacantSeats}
-          onChange={handleChange}
-        />
-        <button className="btn">Join Trip</button>
-      </form>
+      {vacantSeats === 0 ? (
+        <button className="btn" style={{ marginTop: '15px' }}>
+          No Vacant Seat
+        </button>
+      ) : (
+        <form onSubmit={handleJoinTrip}>
+          <input
+            type="number"
+            className="form-input"
+            name="numberOfPassanger"
+            value={state.numberOfPassanger}
+            placeholder="No of passanger"
+            max={vacantSeats}
+            onChange={handleChange}
+          />
+          <button className="btn">Join Trip</button>
+        </form>
+      )}
     </div>
   );
 };
