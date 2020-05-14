@@ -8,16 +8,13 @@ import left from '../../assets/left.svg';
 
 import './login.scss';
 class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: '',
-      password: '',
-      errorMessage: '',
-      isLoading: false
-    };
-  }
-  handleSubmit = async event => {
+  state = {
+    email: '',
+    password: '',
+    errorMessage: '',
+    isLoading: false,
+  };
+  handleSubmit = async (event) => {
     event.preventDefault();
     const { email, password } = this.state;
 
@@ -30,27 +27,27 @@ class Login extends Component {
         ? this.setState({
             isLoading: false,
             errorMessage:
-              'The password is invalid or the user does not have a password.'
+              'The password is invalid or the user does not have a password.',
           })
         : error.code === 'auth/user-not-found'
         ? this.setState({
             isLoading: false,
             errorMessage:
-              'There is no user record corresponding to this identifier.'
+              'There is no user record corresponding to this identifier.',
           })
         : this.setState({
             isLoading: false,
-            errorMessage: 'Shit just got real'
+            errorMessage: 'Shit just got real',
           });
     }
 
     // this.setState({ email: '', password: '' });
   };
-  handleChange = event => {
+  handleChange = (event) => {
     const { name, value } = event.target;
     this.setState({
       [name]: value,
-      errorMessage: ''
+      errorMessage: '',
     });
   };
   render() {

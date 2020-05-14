@@ -15,7 +15,6 @@ class FindRide extends Component {
     this.state = {
       location: '',
       destination: '',
-      numberOfPassanger: '',
       errorMessage: '',
       isLoading: false,
     };
@@ -40,7 +39,6 @@ class FindRide extends Component {
       this.setState({
         location: '',
         destination: '',
-        numberOfPassanger: '',
         isLoading: false,
       });
       this.props.history.push('/found-trip');
@@ -49,7 +47,6 @@ class FindRide extends Component {
       this.setState({
         location: '',
         destination: '',
-        numberOfPassanger: '',
         isLoading: false,
       });
     }
@@ -64,13 +61,7 @@ class FindRide extends Component {
     });
   };
   render() {
-    const {
-      location,
-      destination,
-      errorMessage,
-      isLoading,
-      numberOfPassanger,
-    } = this.state;
+    const { location, destination, errorMessage, isLoading } = this.state;
     return (
       <div className="find-ride">
         <div>
@@ -94,14 +85,6 @@ class FindRide extends Component {
               required
               handleChange={this.handleChange}
               label="Destination"
-            />
-            <FormInput
-              type="number"
-              name="numberOfPassanger"
-              value={numberOfPassanger}
-              required
-              handleChange={this.handleChange}
-              label="Number Of Passanger"
             />
             <div className="buttons">
               <CustomButton type="button" onClick={this.handleSubmit}>

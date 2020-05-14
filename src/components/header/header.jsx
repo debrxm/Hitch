@@ -24,7 +24,7 @@ const Header = () => {
             />
           </div>
           <Link to="/">
-            <h3>TREEP</h3>
+            <h3>HITCH</h3>
           </Link>
         </div>
       </div>

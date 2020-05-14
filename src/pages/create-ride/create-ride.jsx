@@ -4,7 +4,7 @@ import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { Link, withRouter } from 'react-router-dom';
 import FormInput from '../../components/form-input/form-input';
-import { createTrip } from '../../firebase/firebase.utils';
+import { createTrip, updateProfile } from '../../firebase/firebase.utils';
 import { GenerateId } from '../../utils/id-generator';
 import CustomButton from '../../components/custom-button/custom-button';
 import loader from '../../assets/loader.gif';
@@ -39,8 +39,9 @@ class CreateRide extends Component {
 
     try {
       this.setState({ isLoading: true });
+      const id = GenerateId();
       const tripData = {
-        id: GenerateId(),
+        id,
         driver: {
           name: this.props.currentUser.displayName,
           phone: this.props.currentUser.phone,
@@ -54,7 +55,8 @@ class CreateRide extends Component {
         carType,
         passangers: [],
       };
-      await createTrip(tripData);
+      await createTrip(tripData, id);
+      await updateProfile(this.props.currentUser.id, id);
       this.setState({
         pickUpPoint: '',
         destination: '',
@@ -62,7 +64,7 @@ class CreateRide extends Component {
         time: '',
         carType: '',
         vacantSeats: '',
-        isSucces: true,
+        isSuccess: true,
         isLoading: false,
       });
     } catch (error) {

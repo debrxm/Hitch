@@ -16,6 +16,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
+
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
   const userRef = firestore.doc(`users/${userAuth.uid}`);
@@ -27,6 +28,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
       await userRef.set({
         id: uid,
         verified: false,
+        trips: [],
         displayName,
         email,
         joined,
@@ -39,8 +41,8 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   return userRef;
 };
 
-export const createTrip = async (trip) => {
-  const newTripRef = firestore.collection(`trips`).doc();
+export const createTrip = async (trip, id) => {
+  const newTripRef = firestore.collection(`trips`).doc(`${id}`);
   try {
     await newTripRef.set(trip);
     return newTripRef;
@@ -48,6 +50,25 @@ export const createTrip = async (trip) => {
     console.log('Error Creating Trip', error.message);
   }
 };
+
+export const updateProfile = async (userId, tripId) => {
+  const userRef = firestore.doc(`users/${userId}`);
+  const snapShot = await userRef.get();
+  if (snapShot.exists) {
+    let oldTrip = [];
+    oldTrip = snapShot.data().trips;
+    oldTrip.push(tripId);
+    try {
+      await userRef.update({
+        trips: oldTrip,
+      });
+      return userRef;
+    } catch (error) {
+      console.log('error updating profile', error.message);
+    }
+  }
+};
+
 export const findTrip = async (trip) => {
   const tripRef = await firestore
     .collection(`trips`)
@@ -67,10 +88,5 @@ export const findTrip = async (trip) => {
   // }
   // .where('vacantSeats', '>=', `"${trip.destination.numberOfPassanger}"`);
 };
-
-const provider = new firebase.auth.GoogleAuthProvider();
-provider.setCustomParameters({ prompt: 'select_account' });
-
-export const signInWithGoogle = () => auth.signInWithPopup(provider);
 
 export default firebase;

@@ -12,7 +12,7 @@ const Footer = () => {
           <button className="btn">Create Trip</button>
         </Link>
       </div>
-      <p className="copyright">&copy; Treep {new Date().getFullYear}</p>
+      <p className="copyright">&copy; Hitch {new Date().getFullYear}</p>
     </footer>
   );
 };
