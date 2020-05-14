@@ -7,15 +7,13 @@ $secondaryColor: #ffffff;
   right: 0;
   left: 0;
   bottom: 0;
-  height: 10vh;
+  // height: 10vh;
   color: $primaryColor;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  padding-bottom: 10px;
-  border-top-left-radius: 30px;
-  border-top-right-radius: 30px;
+  // padding-bottom: 10px;
   .btns {
     display: flex;
     flex-wrap: wrap;

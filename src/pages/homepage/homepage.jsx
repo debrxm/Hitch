@@ -6,7 +6,7 @@ import { selectCurrentUser } from '../../redux/user/user.selectors';
 import CreateRide from '../../pages/create-ride/create-ride';
 import FindRide from '../../pages/find-ride/find-ride';
 import Footer from '../../components/footer/footer';
-// import loader from '../../assets/loader.gif';
+import home from '../../assets/home.gif';
 import './homepage.scss';
 
 class Homepage extends Component {
@@ -21,7 +21,10 @@ class Homepage extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div className="home">
+        {/* <div className="landing">
+          <img src={home} alt="home" />
+        </div> */}
         <Footer />
       </div>
     );

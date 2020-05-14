@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
+import { firestore } from '../../firebase/firebase.utils';
 import FormInput from '../../components/form-input/form-input';
 import CustomButton from '../../components/custom-button/custom-button';
+import { setFoundTrip } from '../../redux/trip/trip.actions';
 import loader from '../../assets/loader.gif';
 import left from '../../assets/left.svg';
 
@@ -20,14 +23,38 @@ class FindRide extends Component {
   handleSubmit = async (event) => {
     event.preventDefault();
     const { location, destination, numberOfPassanger } = this.state;
-
+    const tripData = { location, destination, numberOfPassanger };
     try {
       this.setState({ isLoading: true });
+      const tripRef = firestore
+        .collection(`trips`)
+        .where('destination', '==', `${destination}`);
+      tripRef.get().then((querySnapshot) => {
+        const trips = [];
+        querySnapshot.forEach((doc) => {
+          trips.push(doc.data());
+        });
+        this.props.setFoundTrip(trips);
+      });
 
-      this.setState({ location: '', destination: '' });
-    } catch (error) {}
+      this.setState({
+        location: '',
+        destination: '',
+        numberOfPassanger: '',
+        isLoading: false,
+      });
+      this.props.history.push('/found-trip');
+    } catch (error) {
+      console.log('Error', error);
+      this.setState({
+        location: '',
+        destination: '',
+        numberOfPassanger: '',
+        isLoading: false,
+      });
+    }
 
-    // this.setState({ location: '', destination: '' });
+    this.setState({ location: '', destination: '' });
   };
   handleChange = (event) => {
     const { name, value } = event.target;
@@ -93,4 +120,8 @@ class FindRide extends Component {
   }
 }
 
-export default withRouter(FindRide);
+const mapDispatchToProps = (dispatch) => ({
+  setFoundTrip: (trip) => dispatch(setFoundTrip(trip)),
+});
+
+export default withRouter(connect(null, mapDispatchToProps)(FindRide));

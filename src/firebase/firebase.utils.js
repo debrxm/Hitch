@@ -40,8 +40,6 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 };
 
 export const createTrip = async (trip) => {
-  console.log(trip);
-
   const newTripRef = firestore.collection(`trips`).doc();
   try {
     await newTripRef.set(trip);
@@ -49,6 +47,25 @@ export const createTrip = async (trip) => {
   } catch (error) {
     console.log('Error Creating Trip', error.message);
   }
+};
+export const findTrip = async (trip) => {
+  const tripRef = await firestore
+    .collection(`trips`)
+    .where('destination', '==', `${trip.destination}`)
+    .get();
+
+  tripRef.onSnapshot((snapShot) => {
+    console.log(snapShot);
+  });
+  // then((querySnapshot) => {
+  //   const trips = [];
+  //   return querySnapshot;
+  // });
+  // } else {
+  //   console.log('here');
+  //   return 'null';
+  // }
+  // .where('vacantSeats', '>=', `"${trip.destination.numberOfPassanger}"`);
 };
 
 const provider = new firebase.auth.GoogleAuthProvider();

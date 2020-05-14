@@ -13,6 +13,7 @@ import Register from './pages/register/register';
 import CreateRide from './pages/create-ride/create-ride';
 import FindRide from './pages/find-ride/find-ride';
 import './App.scss';
+import FoundTripPage from './pages/foundtrippage/foundtrippage';
 
 class App extends React.Component {
   state = {
@@ -61,6 +62,14 @@ class App extends React.Component {
                 currentUser ? <FindRide /> : <Redirect to="/login" />
               }
             />
+            <Route
+              exact
+              path="/found-trip"
+              render={() =>
+                currentUser ? <FoundTripPage /> : <Redirect to="/login" />
+              }
+            />
+
             <Route
               exact
               path="/"

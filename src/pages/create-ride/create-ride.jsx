@@ -5,6 +5,7 @@ import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { Link, withRouter } from 'react-router-dom';
 import FormInput from '../../components/form-input/form-input';
 import { createTrip } from '../../firebase/firebase.utils';
+import { GenerateId } from '../../utils/id-generator';
 import CustomButton from '../../components/custom-button/custom-button';
 import loader from '../../assets/loader.gif';
 import left from '../../assets/left.svg';
@@ -39,6 +40,7 @@ class CreateRide extends Component {
     try {
       this.setState({ isLoading: true });
       const tripData = {
+        id: GenerateId(),
         driver: {
           name: this.props.currentUser.displayName,
           phone: this.props.currentUser.phone,
@@ -113,6 +115,7 @@ class CreateRide extends Component {
               name="date"
               value={date}
               required
+              placeholder="Date"
               handleChange={this.handleChange}
               label=""
             />
@@ -121,6 +124,7 @@ class CreateRide extends Component {
               name="time"
               value={time}
               required
+              placeholder="Time"
               handleChange={this.handleChange}
               label=""
             />
