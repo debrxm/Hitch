@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
-import { firestore } from '../../firebase/firebase.utils';
+import { updateTrip } from '../../firebase/firebase.utils';
 import { PostFetch, Message } from '../email/message';
 import './trip-preview.scss';
 const TripPreview = ({
@@ -19,26 +19,28 @@ const TripPreview = ({
   currentUser,
 }) => {
   const [state, setState] = useState({ numberOfPassanger: '' });
-  const handleJoinTrip = (e) => {
+  const handleJoinTrip = async (e) => {
     e.preventDefault();
-
-    // const { displayName, phone, email } = currentUser;
-    // // const url = 'https://treep-back-end.herokuapp.com/jointrip';
-    // const url = 'http://localhost:8080/jointrip';
-    // const messageHtml = Message({
-    //   displayName,
-    //   phone,
-    //   email,
-    //   destination,
-    //   date,
-    //   driver,
-    // });
-    // const messageToSend = {
-    //   wmail: driver.email,
-    //   subject: `New Message From Treep`,
-    //   html: messageHtml,
-    // };
-    // PostFetch(url, messageToSend);
+    if (state.numberOfPassanger) {
+      await updateTrip(id, state.numberOfPassanger);
+      // const { displayName, phone, email } = currentUser;
+      // // const url = 'https://treep-back-end.herokuapp.com/jointrip';
+      // const url = 'http://localhost:8080/jointrip';
+      // const messageHtml = Message({
+      //   displayName,
+      //   phone,
+      //   email,
+      //   destination,
+      //   date,
+      //   driver,
+      // });
+      // const messageToSend = {
+      //   wmail: driver.email,
+      //   subject: `New Message From Treep`,
+      //   html: messageHtml,
+      // };
+      // PostFetch(url, messageToSend);
+    }
   };
   const handleChange = (event) => {
     const { name, value } = event.target;
