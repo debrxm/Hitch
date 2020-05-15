@@ -64,7 +64,7 @@ const TripPreview = ({
   };
   return (
     <div className="trip-preview">
-      {!state.isSuccess ? (
+      {state.isSuccess ? (
         <span className="success">Trip Successfully Joined</span>
       ) : null}
       <ul>

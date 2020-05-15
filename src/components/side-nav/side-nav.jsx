@@ -25,11 +25,6 @@ const SideNav = ({ history, isShow, currentUser }) => {
             UPCOMING TRIP
           </Link>
         </li>
-        <li>
-          <Link to="/expired-trip" className="link">
-            EXPIRED TRIP
-          </Link>
-        </li>
       </ul>
       {currentUser ? (
         <div className="logout" onClick={logUserOut}>
