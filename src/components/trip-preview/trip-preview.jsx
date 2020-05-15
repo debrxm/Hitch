@@ -93,7 +93,7 @@ const TripPreview = ({
           </div>
           <span className="vacant">
             {' '}
-            {vacantSeats ? vacantSeats : 4} seat(s) available
+            {vacantSeats ? vacantSeats : 0} seat(s) available
           </span>
           <br />
           <span className="car-type">{carType ? carType : 'Jeep'}</span>
