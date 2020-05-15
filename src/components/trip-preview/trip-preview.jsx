@@ -99,10 +99,14 @@ const TripPreview = ({
           <span className="car-type">{carType ? carType : 'Jeep'}</span>
           <br />
           <span className="car-type">
-            {driver ? driver.name : 'Jamal'} created this trip
+            {driver ? driver.name : 'John Doe'} created this trip
           </span>
         </div>
-        {state.isPassanger ? (
+        {driver.id === currentUser.id ? (
+          <button className="btn joined" style={{ marginTop: '15px' }}>
+            Edit
+          </button>
+        ) : state.isPassanger ? (
           <button className="btn joined" style={{ marginTop: '15px' }}>
             Joined
           </button>

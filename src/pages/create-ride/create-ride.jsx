@@ -43,6 +43,7 @@ class CreateRide extends Component {
       const tripData = {
         id,
         driver: {
+          id: this.props.currentUser.id,
           name: this.props.currentUser.displayName,
           phone: this.props.currentUser.phone,
           email: this.props.currentUser.email,

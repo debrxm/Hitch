@@ -35,7 +35,7 @@ class Homepage extends Component {
     return (
       <div className="home">
         <div className="container">
-          <h1>Upcoming Trips With Vacant Seats</h1>
+          <h1>({this.state.trips.length})Upcoming Trips With Vacant Seats</h1>
           {this.state.trips.length !== 0
             ? this.state.trips
                 .filter((item, index) => index < 5)

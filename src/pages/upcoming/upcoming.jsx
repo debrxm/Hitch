@@ -13,11 +13,13 @@ const UpcomingTrip = ({ currentUser }) => {
       const trips = [];
       snapshot.docs.forEach((doc) => {
         // trips =
-        trips.push(
-          doc
-            .data()
-            .passangers.filter((item, index) => item.id === currentUser.id)
-        );
+        console.log(doc.data().passangers);
+
+        // trips.push(
+        //   doc
+        //     .data()
+        //     .passangers.filter((item, index) => item.id === currentUser.id)[0]
+        // );
       });
       setState({ upcomingTrip: trips });
       console.log(state.upcomingTrip);
@@ -25,7 +27,7 @@ const UpcomingTrip = ({ currentUser }) => {
   }, []);
   return (
     <div className="upcoming-trip">
-      <h1>Your Upcoming Trip (s)</h1>
+      <h1>Your Upcoming Trip(s)</h1>
     </div>
   );
 };
