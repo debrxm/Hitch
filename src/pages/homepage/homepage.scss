@@ -5,6 +5,12 @@
   width: 414px;
   .container {
     padding: 0 20px;
+    height: 70vh;
+    overflow: hidden;
+    padding: 0 20px;
+    &:hover {
+      overflow-y: scroll;
+    }
   }
   .landing {
   }
