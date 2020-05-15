@@ -142,3 +142,24 @@ a {
     -webkit-transform: translateX(0px);
   }
 }
+@keyframes toggleShow {
+  0% {
+    display: block;
+    opacity: 1;
+  }
+
+  25% {
+    display: block;
+    opacity: 1;
+  }
+
+  50% {
+    display: block;
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}

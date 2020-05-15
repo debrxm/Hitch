@@ -4,12 +4,15 @@
   height: 100%;
   width: 414px;
   .container {
-    padding: 0 20px;
     height: 70vh;
     overflow: hidden;
     padding: 0 20px;
     &:hover {
       overflow-y: scroll;
+    }
+    h1 {
+      font-size: 16px;
+      text-align: center;
     }
   }
   .landing {

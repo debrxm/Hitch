@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
@@ -15,10 +15,22 @@ const TripPreview = ({
     vacantSeats,
     carType,
     id,
+    passangers,
   },
   currentUser,
 }) => {
-  const [state, setState] = useState({ numberOfPassanger: '' });
+  const [state, setState] = useState({
+    numberOfPassanger: '',
+    isPassanger: false,
+    isSuccess: false,
+  });
+  useEffect(() => {
+    passangers.forEach((item) => {
+      if (item.id === currentUser.id) {
+        setState({ isPassanger: true });
+      }
+    });
+  }, []);
   const handleJoinTrip = async (e) => {
     e.preventDefault();
     if (state.numberOfPassanger) {
@@ -40,6 +52,7 @@ const TripPreview = ({
         html: messageHtml,
       };
       PostFetch(url, messageToSend);
+      setState({ isSuccess: true });
     }
   };
   const handleChange = (event) => {
@@ -51,6 +64,9 @@ const TripPreview = ({
   };
   return (
     <div className="trip-preview">
+      {!state.isSuccess ? (
+        <span className="success">Trip Successfully Joined</span>
+      ) : null}
       <ul>
         <li>Pick Up Point: {pickUpPoint}</li>
         <li>Destination: {destination}</li>
@@ -59,7 +75,11 @@ const TripPreview = ({
         <li>Vacant Seat (s): {vacantSeats}</li>
         <li>Car Type: {carType}</li>
       </ul>
-      {vacantSeats === 0 ? (
+      {state.isPassanger || state.isSuccess ? (
+        <button className="btn" style={{ marginTop: '15px' }}>
+          Joined
+        </button>
+      ) : vacantSeats === 0 ? (
         <button className="btn" style={{ marginTop: '15px' }}>
           No Vacant Seat
         </button>

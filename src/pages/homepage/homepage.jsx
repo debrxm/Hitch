@@ -37,12 +37,12 @@ class Homepage extends Component {
   render() {
     return (
       <div className="home">
-        {/* <div className="landing">
-          <img src={home} alt="home" />
-        </div> */}
         <div className="container">
+          <h1>Upcoming Trips With Vacant Seats</h1>
           {this.state.trips.length !== 0
-            ? this.state.trips.map((trip, index) => <TripPreview trip={trip} />)
+            ? this.state.trips
+                .filter((item, index) => index < 5)
+                .map((trip, index) => <TripPreview trip={trip} />)
             : null}
         </div>
         <Footer />
