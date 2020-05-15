@@ -6,24 +6,22 @@ import { firestore } from '../../firebase/firebase.utils';
 import './upcoming.scss';
 
 const UpcomingTrip = ({ currentUser }) => {
-  const [state, setState] = useState({ upcomingTrip: '' });
-  useEffect(() => {
+  const [state, setState] = useState({ upcomingTrip: [] });
+  useEffect(async () => {
     const tripRef = firestore.collection(`trips`);
-    tripRef.onSnapshot((snapshot) => {
+    await tripRef.onSnapshot(async (snapshot) => {
       const trips = [];
-      snapshot.docs.forEach((doc) => {
+      await snapshot.docs.forEach(async (doc) => {
         // trips =
-        console.log(doc.data().passangers);
-
-        // trips.push(
-        //   doc
-        //     .data()
-        //     .passangers.filter((item, index) => item.id === currentUser.id)[0]
-        // );
+        await doc.data().passangers.forEach((item) => {
+          if (item.id === currentUser.id) {
+            trips.push(doc.data());
+          }
+        });
+        setState({ upcomingTrip: trips });
       });
-      setState({ upcomingTrip: trips });
-      console.log(state.upcomingTrip);
     });
+    console.log(state.upcomingTrip);
   }, []);
   return (
     <div className="upcoming-trip">
