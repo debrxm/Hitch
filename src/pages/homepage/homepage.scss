@@ -2,10 +2,10 @@
   //   background-image: url('../../assets/home.gif');
   //   background-size: cover;
   height: 100%;
-  width: 414px;
+  max-width: 414px;
   .container {
     height: 70vh;
-    overflow: hidden;
+    overflow-y: hidden;
     padding: 0 20px;
     &:hover {
       overflow-y: scroll;
