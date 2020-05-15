@@ -1,5 +1,6 @@
 $tablet: 850px;
 $smartphone: 500px;
+$iphoneX: 375px;
 $primaryColor: #000000;
 $secondaryColor: #ffffff;
 $shadow: 0px 3px 5px rgba(124, 124, 124, 0.747);
@@ -16,10 +17,18 @@ $shadow: 0px 3px 5px rgba(124, 124, 124, 0.747);
     @content;
   }
 }
+@mixin iphoneX {
+  @media (max-width: #{$iphoneX}) {
+    @content;
+  }
+}
 .foundtrippage {
   height: 90vh;
   overflow: hidden;
   padding: 0 20px;
+  @include iphoneX() {
+    overflow-y: scroll;
+  }
   &:hover {
     overflow-y: scroll;
   }

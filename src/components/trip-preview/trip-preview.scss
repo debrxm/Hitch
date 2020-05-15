@@ -1,5 +1,6 @@
 $tablet: 850px;
 $smartphone: 500px;
+$iphoneX: 375px;
 $primaryColor: #000000;
 $secondaryColor: #ffffff;
 $shadow: 0px 3px 5px rgba(124, 124, 124, 0.747);
@@ -16,6 +17,11 @@ $shadow: 0px 3px 5px rgba(124, 124, 124, 0.747);
     @content;
   }
 }
+@mixin iphoneX {
+  @media (max-width: #{$iphoneX}) {
+    @content;
+  }
+}
 
 .trip-preview {
   position: relative;
@@ -25,6 +31,10 @@ $shadow: 0px 3px 5px rgba(124, 124, 124, 0.747);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-radius: 10px;
+  @include iphoneX() {
+    flex-direction: column-reverse;
+  }
   // text-align: center;
   .trip-preview-info {
     width: 70%;

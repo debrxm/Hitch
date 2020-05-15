@@ -1,6 +1,27 @@
+$tablet: 850px;
+$smartphone: 500px;
+$iphoneX: 375px;
 $primaryColor: #000000;
 $secondaryColor: #ffffff;
+$shadow: 0px 3px 5px rgba(124, 124, 124, 0.747);
 
+// Mixin
+@mixin tablet {
+  @media (max-width: #{$tablet}) {
+    @content;
+  }
+}
+
+@mixin smartphone {
+  @media (max-width: #{$smartphone}) {
+    @content;
+  }
+}
+@mixin iphoneX {
+  @media (max-width: #{$iphoneX}) {
+    @content;
+  }
+}
 .footer {
   position: absolute;
   z-index: 2;
@@ -19,14 +40,16 @@ $secondaryColor: #ffffff;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    padding: 0 20px;
+    width: 100%;
     .btn {
-      min-width: 150px;
-      width: auto;
-      height: 50px;
+      width: 150px;
+      // width: auto;
+      height: 40px;
       letter-spacing: 0.5px;
-      padding: 0 35px 0 35px;
-      font-size: 15px;
+      // padding: 0 35px 0 35px;
+      font-size: 14px;
       background-color: black;
       color: white;
       text-transform: uppercase;
