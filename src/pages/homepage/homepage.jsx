@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Switch, Route } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
-import CreateRide from '../../pages/create-ride/create-ride';
-import FindRide from '../../pages/find-ride/find-ride';
 import Footer from '../../components/footer/footer';
 import { firestore } from '../../firebase/firebase.utils';
 import TripPreview from '../../components/trip-preview/trip-preview';

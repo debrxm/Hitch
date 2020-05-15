@@ -93,24 +93,4 @@ export const updateProfile = async (userId, tripId) => {
   }
 };
 
-export const findTrip = async (trip) => {
-  const tripRef = await firestore
-    .collection(`trips`)
-    .where('destination', '==', `${trip.destination}`)
-    .get();
-
-  tripRef.onSnapshot((snapShot) => {
-    console.log(snapShot);
-  });
-  // then((querySnapshot) => {
-  //   const trips = [];
-  //   return querySnapshot;
-  // });
-  // } else {
-  //   console.log('here');
-  //   return 'null';
-  // }
-  // .where('vacantSeats', '>=', `"${trip.destination.numberOfPassanger}"`);
-};
-
 export default firebase;
