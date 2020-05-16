@@ -21,6 +21,7 @@ class CreateRide extends Component {
     numberPlate: '',
     seatCost: '',
     vacantSeats: '',
+    today: '',
     description: '',
     errorMessage: '',
     isSuccess: false,
@@ -110,6 +111,15 @@ class CreateRide extends Component {
       errorMessage: '',
     });
   };
+  componentDidMount() {
+    const now = new Date();
+
+    const day = ('0' + (now.getDate() + 1)).slice(-2);
+    const month = ('0' + (now.getMonth() + 1)).slice(-2);
+
+    const today = now.getFullYear() + '-' + month + '-' + day;
+    this.setState({ today });
+  }
   render() {
     const {
       pickUpPoint,
@@ -121,6 +131,7 @@ class CreateRide extends Component {
       seatCost,
       carType,
       description,
+      today,
       errorMessage,
       isSuccess,
       isLoading,
@@ -160,6 +171,7 @@ class CreateRide extends Component {
               name="date"
               value={date}
               required
+              min={today}
               handleChange={this.handleChange}
               onFocus={(e) => (e.target.type = 'date')}
               onBlur={(e) => (e.target.type = 'text')}
