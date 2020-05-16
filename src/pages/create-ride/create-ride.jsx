@@ -11,6 +11,7 @@ import loader from '../../assets/loader.gif';
 import left from '../../assets/left.svg';
 
 import './create-ride.scss';
+import FormSelect from '../../components/form-select/form-select';
 class CreateRide extends Component {
   state = {
     pickUpPoint: '',
@@ -150,21 +151,95 @@ class CreateRide extends Component {
         <div>
           <h3 className="title">CREATE TRIP</h3>
           <form onSubmit={this.handleSubmit}>
-            <FormInput
-              type="text"
+            <FormSelect
               name="pickUpPoint"
               value={pickUpPoint}
-              required
+              opt="Pick Up Point"
               handleChange={this.handleChange}
-              label="Pick Up Point"
+              options={[
+                'Alor Setar',
+                'Batu Pahat',
+                'Butterworth',
+                'Cukai',
+                'George Town',
+                'Johor Bahru',
+                'Ipoh',
+                'Kampong Baharu',
+                'Kampung Lemal',
+                'Kampung Sungai Pasir',
+                'Kangar',
+                'Ketereh',
+                'Klang',
+                'Kulang',
+                'Kota Bharu',
+                'Kota Kinabalu',
+                'Kuala Lipis',
+                'Kuala Lumpur',
+                'Kuala Terangganu',
+                'Kuantan',
+                'Kuching',
+                'Melaka',
+                'Lahad Datu',
+                'Miri',
+                'Muar',
+                'Pasri Mas',
+                'Pulai Chondong',
+                'raub',
+                'Sandakan',
+                'Seramban',
+                'Seramban Garden',
+                'Shah Alam',
+                'Taiping',
+                'Tawau',
+                'Teluk intan',
+                'Tumpat',
+                'Victoria',
+              ]}
             />
-            <FormInput
-              type="text"
+            <FormSelect
               name="destination"
               value={destination}
-              required
+              opt="Destination"
               handleChange={this.handleChange}
-              label="Destination"
+              options={[
+                'Alor Setar',
+                'Batu Pahat',
+                'Butterworth',
+                'Cukai',
+                'George Town',
+                'Johor Bahru',
+                'Ipoh',
+                'Kampong Baharu',
+                'Kampung Lemal',
+                'Kampung Sungai Pasir',
+                'Kangar',
+                'Ketereh',
+                'Klang',
+                'Kulang',
+                'Kota Bharu',
+                'Kota Kinabalu',
+                'Kuala Lipis',
+                'Kuala Lumpur',
+                'Kuala Terangganu',
+                'Kuantan',
+                'Kuching',
+                'Melaka',
+                'Lahad Datu',
+                'Miri',
+                'Muar',
+                'Pasri Mas',
+                'Pulai Chondong',
+                'raub',
+                'Sandakan',
+                'Seramban',
+                'Seramban Garden',
+                'Shah Alam',
+                'Taiping',
+                'Tawau',
+                'Teluk intan',
+                'Tumpat',
+                'Victoria',
+              ]}
             />
             <FormInput
               type="text"
