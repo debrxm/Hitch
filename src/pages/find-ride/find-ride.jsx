@@ -10,15 +10,12 @@ import left from '../../assets/left.svg';
 
 import './find-ride.scss';
 class FindRide extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      location: '',
-      destination: '',
-      errorMessage: '',
-      isLoading: false,
-    };
-  }
+  state = {
+    location: '',
+    destination: '',
+    errorMessage: '',
+    isLoading: false,
+  };
   handleSubmit = async (event) => {
     event.preventDefault();
     const { location, destination, numberOfPassanger } = this.state;
@@ -65,7 +62,7 @@ class FindRide extends Component {
     return (
       <div className="find-ride">
         <div>
-          <h3 className="title">FIND RIDE</h3>
+          <h3 className="title">FIND TRIP</h3>
           {errorMessage !== '' ? (
             <span className="error">{errorMessage}</span>
           ) : null}

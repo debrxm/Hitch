@@ -12,20 +12,21 @@ import left from '../../assets/left.svg';
 
 import './create-ride.scss';
 class CreateRide extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      pickUpPoint: '',
-      destination: '',
-      date: '',
-      time: '',
-      carType: '',
-      vacantSeats: '',
-      errorMessage: '',
-      isSuccess: false,
-      isLoading: false,
-    };
-  }
+  state = {
+    pickUpPoint: '',
+    destination: '',
+    date: '',
+    time: '',
+    carType: '',
+    numberPlate: '',
+    seatCost: '',
+    vacantSeats: '',
+    description: '',
+    errorMessage: '',
+    isSuccess: false,
+    errorMessage: '',
+    isLoading: false,
+  };
   handleSubmit = async (event) => {
     event.preventDefault();
     const {
@@ -33,6 +34,9 @@ class CreateRide extends Component {
       destination,
       date,
       time,
+      numberPlate,
+      description,
+      seatCost,
       vacantSeats,
       carType,
     } = this.state;
@@ -51,11 +55,31 @@ class CreateRide extends Component {
         pickUpPoint,
         destination,
         date,
+        numberPlate,
+        seatCost,
+        description,
         time,
         vacantSeats,
         carType,
         passangers: [],
       };
+      if (
+        pickUpPoint === '' ||
+        destination === '' ||
+        date === '' ||
+        time === '' ||
+        carType === '' ||
+        numberPlate === '' ||
+        seatCost === '' ||
+        vacantSeats === '' ||
+        description === ''
+      ) {
+        this.setState({
+          errorMessage: 'All fields are required',
+          isLoading: false,
+        });
+        return;
+      }
       await createTrip(tripData, id);
       await updateProfile(this.props.currentUser.id, id);
       this.setState({
@@ -64,8 +88,12 @@ class CreateRide extends Component {
         date: '',
         time: '',
         carType: '',
+        numberPlate: '',
+        seatCost: '',
+        description: '',
         vacantSeats: '',
         isSuccess: true,
+        errorMessage: false,
         isLoading: false,
       });
     } catch (error) {
@@ -89,13 +117,19 @@ class CreateRide extends Component {
       date,
       time,
       vacantSeats,
+      numberPlate,
+      seatCost,
       carType,
+      description,
       errorMessage,
       isSuccess,
       isLoading,
     } = this.state;
     return (
       <div className="create-ride">
+        {errorMessage !== '' ? (
+          <span className="error">{errorMessage}</span>
+        ) : null}
         {isSuccess ? (
           <span className="success">Trip Successfully Created</span>
         ) : null}
@@ -103,7 +137,7 @@ class CreateRide extends Component {
           <span className="error">{errorMessage}</span>
         ) : null}
         <div>
-          <h3 className="title">CREATE RIDE</h3>
+          <h3 className="title">CREATE TRIP</h3>
           <form onSubmit={this.handleSubmit}>
             <FormInput
               type="text"
@@ -114,22 +148,32 @@ class CreateRide extends Component {
               label="Pick Up Point"
             />
             <FormInput
-              type="date"
+              type="text"
+              name="destination"
+              value={destination}
+              required
+              handleChange={this.handleChange}
+              label="Destination"
+            />
+            <FormInput
+              type="text"
               name="date"
               value={date}
               required
-              placeholder="Date"
               handleChange={this.handleChange}
-              label=""
+              onFocus={(e) => (e.target.type = 'date')}
+              onBlur={(e) => (e.target.type = 'text')}
+              label="Trip Date"
             />
             <FormInput
-              type="time"
+              type="text"
               name="time"
               value={time}
               required
-              placeholder="Time"
               handleChange={this.handleChange}
-              label=""
+              onFocus={(e) => (e.target.type = 'time')}
+              onBlur={(e) => (e.target.type = 'text')}
+              label="Trip Time"
             />
             <FormInput
               type="text"
@@ -140,6 +184,14 @@ class CreateRide extends Component {
               label="Car Type"
             />
             <FormInput
+              type="text"
+              name="numberPlate"
+              value={numberPlate}
+              required
+              handleChange={this.handleChange}
+              label="Number Plate"
+            />
+            <FormInput
               type="number"
               name="vacantSeats"
               value={vacantSeats}
@@ -148,13 +200,31 @@ class CreateRide extends Component {
               label="Vacant Seats"
             />
             <FormInput
-              type="text"
-              name="destination"
-              value={destination}
+              type="number"
+              name="seatCost"
+              value={seatCost}
               required
               handleChange={this.handleChange}
-              label="Destination"
+              label="Seat Cost"
             />
+            <div className="text-area">
+              <textarea
+                required
+                name="description"
+                value={description}
+                onChange={this.handleChange}
+                className={`${description.length ? 'expand' : null}`}
+                cols="100"
+                rows="1"
+              ></textarea>
+              <label
+                className={`${
+                  description.length ? 'shrink' : ''
+                } form-input-label`}
+              >
+                Description
+              </label>
+            </div>
             <div className="buttons">
               <CustomButton type="button" onClick={this.handleSubmit}>
                 CREATE {isLoading ? <img src={loader} alt="Loader" /> : null}

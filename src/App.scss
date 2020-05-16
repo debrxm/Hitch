@@ -79,6 +79,32 @@ a {
     background-color: white;
     // overflow-x: hidden;
   }
+  .success {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    left: 0;
+    background-color: #affdaf;
+    color: green;
+    padding: 3px 10px;
+    font-weight: 600;
+    animation: toggleShow 5s linear forwards;
+    z-index: 99;
+    text-align: center;
+  }
+  .error {
+    position: absolute;
+    top: 80px;
+    right: 0;
+    left: 0;
+    background-color: #990202;
+    // background-color: #ff00008a;
+    color: #fff;
+    padding: 3px 10px;
+    font-weight: 600;
+    z-index: 99;
+    text-align: center;
+  }
 }
 @keyframes animateSideNav {
   0% {

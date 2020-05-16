@@ -11,25 +11,32 @@ import left from '../../assets/left.svg';
 import './register.scss';
 
 class Register extends Component {
-  constructor() {
-    super();
-    this.state = {
-      displayName: '',
-      email: '',
-      phone: '',
-      password: '',
-      confirmPassword: '',
-      errorMessage: '',
-      isLoading: false,
-    };
-  }
+  state = {
+    displayName: '',
+    email: '',
+    phone: '',
+    age: '',
+    selectGender: '',
+    password: '',
+    confirmPassword: '',
+    errorMessage: '',
+    isLoading: false,
+  };
   handleChange = (e) => {
     const { name, value } = e.target;
     this.setState({ [name]: value, errorMessage: '' });
   };
   handleSubmit = async (e) => {
     e.preventDefault();
-    const { displayName, email, phone, password, confirmPassword } = this.state;
+    const {
+      displayName,
+      email,
+      phone,
+      age,
+      selectGender,
+      password,
+      confirmPassword,
+    } = this.state;
     if (password !== confirmPassword) {
       this.setState({
         errorMessage: `Password did not match!`,
@@ -42,7 +49,12 @@ class Register extends Component {
         email,
         password
       );
-      await createUserProfileDocument(user, { displayName, phone });
+      await createUserProfileDocument(user, {
+        displayName,
+        phone,
+        age,
+        selectGender,
+      });
       this.setState({ isSuccess: true });
     } catch (error) {
       error.code === 'auth/email-already-in-use'
@@ -65,6 +77,8 @@ class Register extends Component {
       displayName: '',
       email: '',
       phone: '',
+      age: '',
+      selectGender: '',
       password: '',
       confirmPassword: '',
     });
@@ -74,6 +88,8 @@ class Register extends Component {
       displayName,
       email,
       phone,
+      age,
+      selectGender,
       password,
       confirmPassword,
       errorMessage,
@@ -111,6 +127,24 @@ class Register extends Component {
               label="Email"
               onChange={this.handleChange}
             />
+            <FormInput
+              type="number"
+              name="age"
+              value={age}
+              required
+              label="Age"
+              onChange={this.handleChange}
+            />
+            <select
+              className="select-gender"
+              name="selectGender"
+              value={selectGender}
+              onChange={this.handleChange}
+            >
+              <option value="">Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
             <FormInput
               type="password"
               name="password"
