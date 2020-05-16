@@ -13,6 +13,8 @@ const TripPreview = ({
     date,
     time,
     vacantSeats,
+    seatCost,
+    numberPlate,
     carType,
     id,
     passangers,
@@ -96,7 +98,13 @@ const TripPreview = ({
             {vacantSeats ? vacantSeats : 0} seat(s) available
           </span>
           <br />
+          <span className="cost"> RM{seatCost ? seatCost : 0} / seat</span>
+          <br />
           <span className="car-type">{carType ? carType : 'Jeep'}</span>
+          <br />
+          <span className="car-type">
+            {numberPlate ? numberPlate : 'YTW653T'}
+          </span>
           <br />
           <span className="car-type">
             {driver.id === currentUser.id ? 'You' : driver.name} created this

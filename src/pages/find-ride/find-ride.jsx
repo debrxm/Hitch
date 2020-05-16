@@ -18,15 +18,20 @@ class FindRide extends Component {
   };
   handleSubmit = async (event) => {
     event.preventDefault();
-    const { location, destination, numberOfPassanger } = this.state;
-    const tripData = { location, destination, numberOfPassanger };
+    const { location, destination } = this.state;
     try {
       this.setState({ isLoading: true });
-      const tripRef = firestore
-        .collection(`trips`)
-        .where('destination', '==', `${destination}`);
+      const tripUrl =
+        location !== ''
+          ? firestore
+              .collection(`trips`)
+              .where('pickUpPoint', '==', `${location.toLowerCase()}`)
+              .where('destination', '==', `${destination.toLowerCase()}`)
+          : firestore
+              .collection(`trips`)
+              .where('destination', '==', `${destination.toLowerCase()}`);
+      const tripRef = tripUrl;
       tripRef.onSnapshot((snapshot) => {
-        console.log(snapshot.docs);
         const trips = [];
         snapshot.docs.forEach((doc) => {
           trips.push(doc.data());

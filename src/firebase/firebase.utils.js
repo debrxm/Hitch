@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
+import 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAEwJl07UCffdmdT1DoSzwCTk6LdnFEDDE',
@@ -91,6 +92,13 @@ export const updateProfile = async (userId, tripId) => {
       console.log('error updating profile', error.message);
     }
   }
+};
+var storageRef = firebase.storage().ref();
+
+export const uploadImage = async (file) => {
+  storageRef.put(file).then(function (snapshot) {
+    console.log('Uploaded a blob or file!');
+  });
 };
 
 export default firebase;
