@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { firestore } from '../../firebase/firebase.utils';
-import FormInput from '../../components/form-input/form-input';
 import CustomButton from '../../components/custom-button/custom-button';
 import { setFoundTrip } from '../../redux/trip/trip.actions';
 import loader from '../../assets/loader.gif';
 import left from '../../assets/left.svg';
 
 import './find-ride.scss';
+import FormSelect from '../../components/form-select/form-select';
 class FindRide extends Component {
   state = {
     location: '',
@@ -72,21 +72,95 @@ class FindRide extends Component {
             <span className="error">{errorMessage}</span>
           ) : null}
           <form onSubmit={this.handleSubmit}>
-            <FormInput
-              type="text"
+            <FormSelect
               name="location"
               value={location}
-              required
+              opt="Pick Up Point"
               handleChange={this.handleChange}
-              label="Location"
+              options={[
+                'Alor Setar',
+                'Batu Pahat',
+                'Butterworth',
+                'Cukai',
+                'George Town',
+                'Johor Bahru',
+                'Ipoh',
+                'Kampong Baharu',
+                'Kampung Lemal',
+                'Kampung Sungai Pasir',
+                'Kangar',
+                'Ketereh',
+                'Klang',
+                'Kulang',
+                'Kota Bharu',
+                'Kota Kinabalu',
+                'Kuala Lipis',
+                'Kuala Lumpur',
+                'Kuala Terangganu',
+                'Kuantan',
+                'Kuching',
+                'Melaka',
+                'Lahad Datu',
+                'Miri',
+                'Muar',
+                'Pasri Mas',
+                'Pulai Chondong',
+                'Raub',
+                'Sandakan',
+                'Seramban',
+                'Seramban Garden',
+                'Shah Alam',
+                'Taiping',
+                'Tawau',
+                'Teluk intan',
+                'Tumpat',
+                'Victoria',
+              ]}
             />
-            <FormInput
-              type="text"
+            <FormSelect
               name="destination"
               value={destination}
-              required
+              opt="Destination"
               handleChange={this.handleChange}
-              label="Destination"
+              options={[
+                'Alor Setar',
+                'Batu Pahat',
+                'Butterworth',
+                'Cukai',
+                'George Town',
+                'Johor Bahru',
+                'Ipoh',
+                'Kampong Baharu',
+                'Kampung Lemal',
+                'Kampung Sungai Pasir',
+                'Kangar',
+                'Ketereh',
+                'Klang',
+                'Kulang',
+                'Kota Bharu',
+                'Kota Kinabalu',
+                'Kuala Lipis',
+                'Kuala Lumpur',
+                'Kuala Terangganu',
+                'Kuantan',
+                'Kuching',
+                'Melaka',
+                'Lahad Datu',
+                'Miri',
+                'Muar',
+                'Pasri Mas',
+                'Pulai Chondong',
+                'Raub',
+                'Sandakan',
+                'Seramban',
+                'Seramban Garden',
+                'Shah Alam',
+                'Taiping',
+                'Tawau',
+                'Teluk intan',
+                'Tumpat',
+                'Victoria',
+              ]}
             />
             <div className="buttons">
               <CustomButton type="button" onClick={this.handleSubmit}>

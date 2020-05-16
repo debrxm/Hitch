@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
@@ -26,13 +26,11 @@ const TripPreview = ({
     isPassanger: false,
     isSuccess: false,
   });
-  useEffect(() => {
-    passangers.forEach((item) => {
-      if (item.id === currentUser.id) {
-        setState({ isPassanger: true });
-      }
-    });
-  }, []);
+  passangers.forEach((item) => {
+    if (item.id === currentUser.id) {
+      setState({ isPassanger: true });
+    }
+  });
   const handleJoinTrip = async (e) => {
     e.preventDefault();
     if (state.numberOfPassanger) {
@@ -61,7 +59,6 @@ const TripPreview = ({
     const { name, value } = event.target;
     setState({
       [name]: value,
-      errorMessage: '',
     });
   };
   return (

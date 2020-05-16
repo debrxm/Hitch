@@ -12,12 +12,6 @@ class Homepage extends Component {
     trips: [],
   };
   async componentDidMount() {
-    // if (navigator.geolocation) {
-    //   navigator.geolocation.getCurrentPosition((position) => {
-    //     const lat = position.coords.latitude;
-    //     const long = position.coords.longitude;
-    //   });
-    // }
     const tripRef = firestore.collection('trips').orderBy('date', 'asc');
     tripRef.onSnapshot((snapshot) => {
       const trips = [];
@@ -27,7 +21,6 @@ class Homepage extends Component {
         }
       });
       this.setState({ trips });
-      console.log(this.state.trips);
     });
   }
 
@@ -39,7 +32,7 @@ class Homepage extends Component {
           {this.state.trips.length !== 0
             ? this.state.trips
                 .filter((item, index) => index < 5)
-                .map((trip, index) => <TripPreview trip={trip} />)
+                .map((trip, index) => <TripPreview key={index} trip={trip} />)
             : null}
         </div>
         <Footer />

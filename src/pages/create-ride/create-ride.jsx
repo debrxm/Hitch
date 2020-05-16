@@ -26,7 +26,6 @@ class CreateRide extends Component {
     description: '',
     errorMessage: '',
     isSuccess: false,
-    errorMessage: '',
     isLoading: false,
   };
   handleSubmit = async (event) => {
@@ -145,9 +144,6 @@ class CreateRide extends Component {
         {isSuccess ? (
           <span className="success">Trip Successfully Created</span>
         ) : null}
-        {errorMessage !== '' ? (
-          <span className="error">{errorMessage}</span>
-        ) : null}
         <div>
           <h3 className="title">CREATE TRIP</h3>
           <form onSubmit={this.handleSubmit}>
@@ -184,7 +180,7 @@ class CreateRide extends Component {
                 'Muar',
                 'Pasri Mas',
                 'Pulai Chondong',
-                'raub',
+                'Raub',
                 'Sandakan',
                 'Seramban',
                 'Seramban Garden',
@@ -229,7 +225,7 @@ class CreateRide extends Component {
                 'Muar',
                 'Pasri Mas',
                 'Pulai Chondong',
-                'raub',
+                'Raub',
                 'Sandakan',
                 'Seramban',
                 'Seramban Garden',

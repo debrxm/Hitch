@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from //  useState, useEffect
+'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
-import { firestore } from '../../firebase/firebase.utils';
+// import { firestore } from '../../firebase/firebase.utils';
 import './upcoming.scss';
 
 const UpcomingTrip = ({ currentUser }) => {
-  const [state, setState] = useState({ upcomingTrip: [] });
+  // const [state, setState] = useState({ upcomingTrip: [] });
   // useEffect(async () => {
   //   const tripRef = firestore.collection(`trips`);
   //   await tripRef.onSnapshot(async (snapshot) => {
