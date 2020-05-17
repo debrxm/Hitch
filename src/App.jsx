@@ -3,11 +3,13 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {
+  firestore,
   userPresence,
   auth,
   createUserProfileDocument,
 } from './firebase/firebase.utils';
 import { setCurrentUser } from './redux/user/user.actions';
+import { setTrips } from './redux/trip/trip.actions';
 import { selectCurrentUser } from './redux/user/user.selectors';
 import Header from './components/header/header';
 import Homepage from './pages/homepage/homepage';
@@ -20,6 +22,7 @@ import './App.scss';
 import FoundTripPage from './pages/foundtrippage/foundtrippage';
 import UpcomingTrip from './pages/upcoming/upcoming';
 import History from './pages/history/history';
+import TripPage from './pages/trippage/trippage';
 
 class App extends React.Component {
   state = {
@@ -39,6 +42,17 @@ class App extends React.Component {
         });
         userPresence();
       }
+      const tripRef = firestore.collection('trips').orderBy('date', 'asc');
+      tripRef.onSnapshot((snapshot) => {
+        const tripsArr = [];
+        snapshot.docs.forEach((doc) => {
+          tripsArr.push(doc.data());
+        });
+        // console.log(tripsArr);
+        this.props.setTrips(tripsArr);
+        // console.log(trips);
+      });
+
       setCurrentUser(userAuth);
       this.setState({
         isLoading: false,
@@ -119,6 +133,7 @@ class App extends React.Component {
                 currentUser ? <Homepage /> : <Redirect to="/login" />
               }
             />
+            <Route exact path={`/trips/:tripId`} component={TripPage} />
           </Switch>
         </div>
       </div>
@@ -130,6 +145,7 @@ const mapStateToProps = createStructuredSelector({
 });
 const mapDispatchToProps = (dispatch) => ({
   setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+  setTrips: (trip) => dispatch(setTrips(trip)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

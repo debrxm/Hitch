@@ -106,10 +106,8 @@ export const userPresence = async (userAuth) => {
     .database()
     .ref('.info/connected')
     .on('value', (snapshot) => {
-      console.log(snapshot);
-
       if (snapshot.val() === false) {
-        userStatusFirestoreRef.update(isOfflineForDatabase);
+        userStatusFirestoreRef.update(isOfflineForFirestore);
         return;
       }
       userStatusDatabaseRef
@@ -120,6 +118,14 @@ export const userPresence = async (userAuth) => {
           userStatusFirestoreRef.update(isOnlineForFirestore);
         });
     });
+  userStatusFirestoreRef.onSnapshot(function (doc) {
+    const isOnline = doc.data().state == 'online';
+    // ... use isOnline
+    if (!isOnline) {
+      userStatusDatabaseRef.update(isOfflineForDatabase);
+    }
+    // console.log(isOnline);
+  });
 };
 
 export const createTrip = async (trip, id) => {

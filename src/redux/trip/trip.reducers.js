@@ -1,14 +1,21 @@
 import { tripActionTypes } from './trip.actionTypes';
 const INITIAL_STATE = {
-  trip: null,
+  allTrip: [],
+  foundTrip: [],
 };
 
 const tripReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case tripActionTypes.SET_TRIPS:
+      return {
+        ...state,
+        allTrips: action.payload,
+      };
+
     case tripActionTypes.SET_FOUND_TRIP:
       return {
         ...state,
-        trip: action.payload,
+        foundTrip: action.payload,
       };
 
     default:

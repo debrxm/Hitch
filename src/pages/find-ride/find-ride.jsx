@@ -35,8 +35,7 @@ class FindRide extends Component {
   };
   handleSubmit = async (event) => {
     event.preventDefault();
-    const { location, destination, file } = this.state;
-    uploadImage(file);
+    const { location, destination } = this.state;
     try {
       this.setState({ isLoading: true });
       const tripUrl =
