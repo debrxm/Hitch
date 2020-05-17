@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {
-  firebaseDb,
+  userPresence,
   auth,
   createUserProfileDocument,
 } from './firebase/firebase.utils';
@@ -37,6 +37,7 @@ class App extends React.Component {
             ...snapShot.data(),
           });
         });
+        userPresence();
       }
       setCurrentUser(userAuth);
       this.setState({

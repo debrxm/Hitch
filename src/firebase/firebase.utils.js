@@ -16,7 +16,6 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-export const firebaseDb = firebase;
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
@@ -42,6 +41,85 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     }
   }
   return userRef;
+};
+
+// export const userPresence = async (userAuth) => {
+//   const userId = auth.currentUser.uid;
+//   const firestoreDb = firebase.firestore();
+//   const oldRealTimeDb = firebase.database();
+
+//   const usersRef = firestoreDb.collection('users'); // Get a reference to the Users collection;
+//   const onlineRef = oldRealTimeDb.ref('.info/connected'); // Get a reference to the list of connections
+
+//   onlineRef.on('value', (snapshot) => {
+//     // Set the Firestore User's online status to true
+//     usersRef.doc(userId).update(
+//       {
+//         online: true,
+//       }
+//     );
+
+//     // Let's also create a key in our real-time database
+//     // The value is set to 'online'
+//     oldRealTimeDb.ref(`/status/${userId}`).set('online');
+//   });
+// };
+export const userPresence = async (userAuth) => {
+  const uid = auth.currentUser.uid;
+  const userStatusDatabaseRef = firebase.database().ref('/users/' + uid);
+  const isOfflineForDatabase = {
+    state: 'offline',
+    last_changed: firebase.database.ServerValue.TIMESTAMP,
+  };
+
+  const isOnlineForDatabase = {
+    state: 'online',
+    last_changed: firebase.database.ServerValue.TIMESTAMP,
+  };
+
+  firebase
+    .database()
+    .ref('.info/connected')
+    .on('value', function (snapshot) {
+      if (snapshot.val() === false) {
+        return;
+      }
+      userStatusDatabaseRef
+        .onDisconnect()
+        .set(isOfflineForDatabase)
+        .then(function () {
+          userStatusDatabaseRef.set(isOnlineForDatabase);
+        });
+    });
+  const userStatusFirestoreRef = firebase.firestore().doc('/users/' + uid);
+  const isOfflineForFirestore = {
+    state: 'offline',
+    last_changed: firebase.firestore.FieldValue.serverTimestamp(),
+  };
+
+  const isOnlineForFirestore = {
+    state: 'online',
+    last_changed: firebase.firestore.FieldValue.serverTimestamp(),
+  };
+
+  firebase
+    .database()
+    .ref('.info/connected')
+    .on('value', (snapshot) => {
+      console.log(snapshot);
+
+      if (snapshot.val() === false) {
+        userStatusFirestoreRef.update(isOfflineForDatabase);
+        return;
+      }
+      userStatusDatabaseRef
+        .onDisconnect()
+        .update(isOfflineForDatabase)
+        .then(() => {
+          userStatusDatabaseRef.update(isOnlineForDatabase);
+          userStatusFirestoreRef.update(isOnlineForFirestore);
+        });
+    });
 };
 
 export const createTrip = async (trip, id) => {
