@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import { firestore, uploadImage } from '../../firebase/firebase.utils';
+import { firestore } from '../../firebase/firebase.utils';
 import CustomButton from '../../components/custom-button/custom-button';
 import { setFoundTrip } from '../../redux/trip/trip.actions';
 import loader from '../../assets/loader.gif';
@@ -13,7 +13,6 @@ class FindRide extends Component {
   state = {
     location: '',
     destination: '',
-    file: '',
     errorMessage: '',
     isLoading: false,
   };
@@ -24,15 +23,6 @@ class FindRide extends Component {
   //     reader.onload = () => resolve(reader.result);
   //     reader.onerror = (error) => reject(error);
   //   });
-  handleFileChange = async (event) => {
-    const { name, value } = event.target;
-    // const file = event.target.files[0];
-    // await uploadImage(file);
-    this.setState({
-      [name]: value,
-      errorMessage: '',
-    });
-  };
   handleSubmit = async (event) => {
     event.preventDefault();
     const { location, destination } = this.state;
@@ -80,7 +70,7 @@ class FindRide extends Component {
     });
   };
   render() {
-    const { location, destination, file, errorMessage, isLoading } = this.state;
+    const { location, destination, errorMessage, isLoading } = this.state;
     return (
       <div className="find-ride">
         <div>
@@ -89,12 +79,6 @@ class FindRide extends Component {
             <span className="error">{errorMessage}</span>
           ) : null}
           <form onSubmit={this.handleSubmit}>
-            <input
-              type="file"
-              name="file"
-              value={file}
-              onChange={this.handleFileChange}
-            />
             <FormSelect
               name="location"
               value={location}

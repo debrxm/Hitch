@@ -119,7 +119,7 @@ export const userPresence = async (userAuth) => {
         });
     });
   userStatusFirestoreRef.onSnapshot(function (doc) {
-    const isOnline = doc.data().state ? doc.data().state == 'online' : null;
+    const isOnline = doc.data().state ? doc.data().state === 'online' : null;
     // ... use isOnline
     if (!isOnline) {
       userStatusDatabaseRef.update(isOfflineForDatabase);

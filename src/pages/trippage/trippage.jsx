@@ -26,13 +26,9 @@ const TripPage = ({ trip, currentUser }) => {
   });
   useEffect(() => {
     passangers.filter((item, index) => {
-      if (item.id !== currentUser.id) {
-        return;
-      }
-      setState({ isPassanger: true });
-      return;
+      return item.id === currentUser.id ? setState({ isPassanger: true }) : '';
     });
-  }, []);
+  }, [currentUser.id, passangers]);
   const handleJoinTrip = async (e) => {
     e.preventDefault();
     if (state.numberOfPassanger) {
@@ -111,18 +107,11 @@ const TripPage = ({ trip, currentUser }) => {
           </span>
           <div className="passangers">
             <ul>
-              {passangers.map((item, index) => {
-                {
-                  /* if (item.id === currentUser.id) {
-                  setState({ isPassanger: true });
-                } */
-                }
-                return (
-                  <li key={index} className="passanger">
-                    {item.name}
-                  </li>
-                );
-              })}
+              {passangers.map((item, index) => (
+                <li key={index} className="passanger">
+                  {item.name}
+                </li>
+              ))}
             </ul>
           </div>
         </div>

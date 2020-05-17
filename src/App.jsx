@@ -23,6 +23,7 @@ import FoundTripPage from './pages/foundtrippage/foundtrippage';
 import UpcomingTrip from './pages/upcoming/upcoming';
 import History from './pages/history/history';
 import TripPage from './pages/trippage/trippage';
+import AllTripPage from './pages/alltrip/alltrip';
 
 class App extends React.Component {
   state = {
@@ -105,7 +106,13 @@ class App extends React.Component {
                 currentUser ? <History /> : <Redirect to="/login" />
               }
             />
-
+            <Route
+              exact
+              path="/trips"
+              render={() =>
+                currentUser ? <AllTripPage /> : <Redirect to="/login" />
+              }
+            />
             <Route
               exact
               path="/"
@@ -133,7 +140,13 @@ class App extends React.Component {
                 currentUser ? <Homepage /> : <Redirect to="/login" />
               }
             />
-            <Route exact path={`/trips/:tripId`} component={TripPage} />
+            <Route
+              exact
+              path={`/trips/:tripId`}
+              render={() =>
+                currentUser ? <TripPage /> : <Redirect to="/login" />
+              }
+            />
           </Switch>
         </div>
       </div>

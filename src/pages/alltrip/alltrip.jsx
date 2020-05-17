@@ -5,25 +5,25 @@ import { createStructuredSelector } from 'reselect';
 import { selectAllTrip } from '../../redux/trip/trip.selectors';
 import Footer from '../../components/footer/footer';
 import TripPreview from '../../components/trip-preview/trip-preview';
-import './homepage.scss';
+import './alltrip.scss';
 
-const Homepage = ({ trips }) => {
+const AllTripPage = ({ trips }) => {
   return (
     <div className="home">
       <div className="container">
         <h1>
-          ({trips.filter((item, index) => item.vacantSeats !== 0).length}
-          )Upcoming Trips With Vacant Seats
+          ({trips.length}
+          )Trips
         </h1>
         {trips.length !== 0
           ? trips
-              .filter((item, index) => item.vacantSeats !== 0)
+              .filter((item, index) => index < 10)
               .map((trip, index) => <TripPreview key={index} trip={trip} />)
           : null}
         <div className="all-trip">
-          <Link to="/trips">
-            <button className="btn">Show All Trips</button>
-          </Link>
+          {trips.length > 10 ? (
+            <button className="btn">Load More</button>
+          ) : null}
         </div>
       </div>
       <Footer />
@@ -35,4 +35,4 @@ const mapStateToProps = createStructuredSelector({
   trips: selectAllTrip,
 });
 
-export default connect(mapStateToProps)(Homepage);
+export default connect(mapStateToProps)(AllTripPage);
