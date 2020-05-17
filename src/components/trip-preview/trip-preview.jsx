@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
+import { updateTrip } from '../../firebase/firebase.utils';
+import { PostFetch, Message } from '../../components/email/message';
 import './trip-preview.scss';
-const TripPreview = ({
-  trip: {
+const TripPreview = ({ trip, history, currentUser }) => {
+  const {
     driver,
     pickUpPoint,
     destination,
@@ -17,15 +19,55 @@ const TripPreview = ({
     carType,
     id,
     passangers,
-  },
-  history,
-  currentUser,
-}) => {
+  } = trip;
+  const [state, setState] = useState({
+    numberOfPassanger: '',
+    isPassanger: false,
+    isSuccess: false,
+  });
+  useEffect(() => {
+    passangers.filter((item, index) => {
+      return item.id === currentUser.id ? setState({ isPassanger: true }) : '';
+    });
+  }, [currentUser.id, passangers]);
   const goToTripPage = () => {
     history.push(`/trips/${id}`);
   };
+  const handleJoinTrip = async (e) => {
+    e.preventDefault();
+    if (state.numberOfPassanger) {
+      await updateTrip(id, state.numberOfPassanger, currentUser);
+      const { displayName, phone, email } = currentUser;
+      const url = 'https://treep-back-end.herokuapp.com/jointrip';
+      // const url = 'http://localhost:8080/jointrip';
+      const messageHtml = Message({
+        displayName,
+        phone,
+        email,
+        destination,
+        date,
+        driver,
+      });
+      const messageToSend = {
+        email: driver.email,
+        subject: `New Message From Treep`,
+        html: messageHtml,
+      };
+      PostFetch(url, messageToSend);
+      setState({ isSuccess: true });
+    }
+  };
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setState({
+      [name]: value,
+    });
+  };
   return (
     <div className="trip-preview" onClick={goToTripPage}>
+      {state.isSuccess ? (
+        <span className="success">Trip Successfully Joined</span>
+      ) : null}
       <div className="trip-preview-info">
         <div className="trip-info">
           <div className="trip-info-head">
@@ -68,6 +110,36 @@ const TripPreview = ({
             trip
           </span>
         </div>
+        {driver.id === currentUser.id ? (
+          <button className="btn edit" style={{ marginTop: '15px' }}>
+            Edit
+          </button>
+        ) : state.isPassanger ? (
+          <button className="btn joined" style={{ marginTop: '15px' }}>
+            Joined
+          </button>
+        ) : state.isSuccess ? (
+          <button className="btn joined" style={{ marginTop: '15px' }}>
+            Joined
+          </button>
+        ) : vacantSeats === 0 ? (
+          <button className="btn no-vacant" style={{ marginTop: '15px' }}>
+            No Vacant Seat
+          </button>
+        ) : (
+          <form onSubmit={handleJoinTrip}>
+            <input
+              type="number"
+              className="form-input"
+              name="numberOfPassanger"
+              value={state.numberOfPassanger}
+              placeholder="No of passanger"
+              max={vacantSeats}
+              onChange={handleChange}
+            />
+            <button className="btn">Join Trip</button>
+          </form>
+        )}
       </div>
       <div className="car-image">Car Image</div>
     </div>

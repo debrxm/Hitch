@@ -1,0 +1,45 @@
+$tablet: 850px;
+$smartphone: 500px;
+$iphoneX: 375px;
+$primaryColor: #000000;
+$secondaryColor: #ffffff;
+$shadow: 0px 3px 5px rgba(124, 124, 124, 0.747);
+
+// Mixin
+@mixin tablet {
+  @media (max-width: #{$tablet}) {
+    @content;
+  }
+}
+
+@mixin smartphone {
+  @media (max-width: #{$smartphone}) {
+    @content;
+  }
+}
+@mixin iphoneX {
+  @media (max-width: #{$iphoneX}) {
+    @content;
+  }
+}
+.all-trip-page {
+  height: 100%;
+  max-width: 414px;
+  .container {
+    height: 70vh;
+    overflow-y: hidden;
+    padding: 0 20px;
+    text-align: left;
+    @include iphoneX() {
+      overflow-y: scroll;
+    }
+    &:hover {
+      overflow-y: scroll;
+    }
+    h1 {
+      font-size: 16px;
+      font-weight: 500;
+      text-align: center;
+    }
+  }
+}

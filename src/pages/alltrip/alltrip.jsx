@@ -9,7 +9,7 @@ import './alltrip.scss';
 
 const AllTripPage = ({ trips }) => {
   return (
-    <div className="home">
+    <div className="all-trip-page">
       <div className="container">
         <h1>
           ({trips.length}
