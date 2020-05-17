@@ -36,8 +36,8 @@ const TripPreview = ({
     if (state.numberOfPassanger) {
       await updateTrip(id, state.numberOfPassanger, currentUser);
       const { displayName, phone, email } = currentUser;
-      // const url = 'https://treep-back-end.herokuapp.com/jointrip';
-      const url = 'http://localhost:8080/jointrip';
+      const url = 'https://treep-back-end.herokuapp.com/jointrip';
+      // const url = 'http://localhost:8080/jointrip';
       const messageHtml = Message({
         displayName,
         phone,

@@ -1,4 +1,5 @@
 import firebase from 'firebase/app';
+import 'firebase/database';
 import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/storage';
@@ -15,6 +16,7 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
+export const firebaseDb = firebase;
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
@@ -93,12 +95,15 @@ export const updateProfile = async (userId, tripId) => {
     }
   }
 };
-var storageRef = firebase.storage().ref();
+const storageRef = firebase.storage().ref();
 
 export const uploadImage = async (file) => {
-  storageRef.put(file).then(function (snapshot) {
-    console.log('Uploaded a blob or file!');
-  });
+  storageRef
+    .child(`images/${file.name}`)
+    .put(file)
+    .then(function (snapshot) {
+      console.log('Uploaded a blob or file!', snapshot);
+    });
 };
 
 export default firebase;
