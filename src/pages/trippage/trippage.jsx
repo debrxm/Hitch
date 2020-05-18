@@ -105,7 +105,10 @@ const TripPage = ({ trip, currentUser }) => {
             {driver.id === currentUser.id ? 'You' : driver.name} created this
             trip
           </span>
+          <br />
+          <span className="car-type">Contact: {driver.phone}</span>
           <div className="passangers">
+            <h6>Passanger(s):</h6>
             <ul>
               {passangers.map((item, index) => (
                 <li key={index} className="passanger">
