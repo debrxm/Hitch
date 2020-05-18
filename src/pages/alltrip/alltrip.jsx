@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { selectAllTrip } from '../../redux/trip/trip.selectors';
 import Footer from '../../components/footer/footer';

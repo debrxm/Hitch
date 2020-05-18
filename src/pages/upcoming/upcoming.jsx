@@ -1,37 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { selectAllTrip } from '../../redux/trip/trip.selectors';
-import { selectCurrentUser } from '../../redux/user/user.selectors';
+import { selectJoinedTrip } from '../../redux/trip/trip.selectors';
 import TripPreview from '../../components/trip-preview/trip-preview';
 import './upcoming.scss';
 
-const UpcomingTrip = ({ currentUser, trips }) => {
-  const [state, setState] = useState({ upcomingTrip: [] });
-  useEffect(() => {
-    const comingTrip = [];
-    trips.forEach((item) => {
-      item.passangers.forEach((sItem) => {
-        if (sItem.id === currentUser.id) {
-          comingTrip.push(item);
-        }
-      });
-    });
-    setState({ upcomingTrip: comingTrip });
-  }, []);
-
+const UpcomingTrip = ({ trips }) => {
   return (
     <div className="upcoming-trip">
-      <h1>Your Upcoming Trip(s): {state.upcomingTrip.length}</h1>
-      {state.upcomingTrip.map((trip, index) => (
+      <h1>Your Upcoming Trip(s): {trips.length}</h1>
+      {trips.map((trip, index) => (
         <TripPreview key={index} trip={trip} />
       ))}
     </div>
   );
 };
 
-const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser,
-  trips: selectAllTrip,
-});
+const mapStateToProps = (state, ownProps) => {
+  return {
+    trips: selectJoinedTrip(state.user.currentUser.id)(state),
+  };
+};
 export default connect(mapStateToProps)(UpcomingTrip);

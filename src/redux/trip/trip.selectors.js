@@ -14,3 +14,15 @@ export const selectATrip = (tripId, url) =>
   createSelector([selectAllTrip], (trip) =>
     trip.filter((item, index) => item.id === tripId)
   );
+export const selectJoinedTrip = (userId) =>
+  createSelector([selectAllTrip], (trips) => {
+    const comingTrip = [];
+    trips.forEach((item) => {
+      item.passangers.forEach((sItem) => {
+        if (sItem.id === userId) {
+          comingTrip.push(item);
+        }
+      });
+    });
+    return comingTrip;
+  });

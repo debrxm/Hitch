@@ -6,7 +6,7 @@ import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { updateTrip } from '../../firebase/firebase.utils';
 import { PostFetch, Message } from '../../components/email/message';
 import './trip-preview.scss';
-const TripPreview = ({ trip, history, currentUser }) => {
+const TripPreview = ({ trip, history, currentUser, expired }) => {
   const {
     driver,
     pickUpPoint,
@@ -110,7 +110,11 @@ const TripPreview = ({ trip, history, currentUser }) => {
             trip
           </span>
         </div>
-        {driver.id === currentUser.id ? (
+        {expired ? (
+          <button className="btn no-vacant" style={{ marginTop: '15px' }}>
+            Expired
+          </button>
+        ) : driver.id === currentUser.id ? (
           <button className="btn edit" style={{ marginTop: '15px' }}>
             Edit
           </button>
