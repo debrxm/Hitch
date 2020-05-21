@@ -14,6 +14,19 @@ export const selectATrip = (tripId, url) =>
   createSelector([selectAllTrip], (trip) =>
     trip.filter((item, index) => item.id === tripId)
   );
+const upcoming = [];
+export const selectUpcomingTrips = () =>
+  createSelector([selectAllTrip], (trips) =>
+    trips.forEach((item) => {
+      let end = new Date(`${item.date} ${item.time}`);
+      let now = new Date();
+      let distance = end - now;
+      if (distance > 0) {
+        upcoming.push(item);
+      }
+      return upcoming
+    })
+  );
 export const selectJoinedTrip = (userId) =>
   createSelector([selectAllTrip], (trips) => {
     const comingTrip = [];
