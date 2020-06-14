@@ -52,6 +52,7 @@ class CreateRide extends Component {
           name: this.props.currentUser.displayName,
           phone: this.props.currentUser.phone,
           email: this.props.currentUser.email,
+          profile_pic: this.props.currentUser.profile_pic ? this.props.currentUser.profile_pic : ''
         },
         pickUpPoint: pickUpPoint.toLocaleLowerCase(),
         destination: destination.toLowerCase(),
@@ -303,7 +304,7 @@ class CreateRide extends Component {
               <label
                 className={`${
                   description.length ? 'shrink' : ''
-                } form-input-label`}
+                  } form-input-label`}
               >
                 Description
               </label>

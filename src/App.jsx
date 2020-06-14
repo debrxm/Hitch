@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {
   firestore,
-  userPresence,
   auth,
   createUserProfileDocument,
 } from './firebase/firebase.utils';
@@ -24,6 +23,8 @@ import UpcomingTrip from './pages/upcoming/upcoming';
 import History from './pages/history/history';
 import TripPage from './pages/trippage/trippage';
 import AllTripPage from './pages/alltrip/alltrip';
+import UserProfilePage from './pages/user-profile-page/user-profile-page';
+import EditProfile from './pages/editprofile/editprofile';
 
 class App extends React.Component {
   state = {
@@ -41,7 +42,6 @@ class App extends React.Component {
             ...snapShot.data(),
           });
         });
-        userPresence();
       }
       const tripRef = firestore.collection('trips').orderBy('date', 'asc');
       tripRef.onSnapshot((snapshot) => {
@@ -96,6 +96,20 @@ class App extends React.Component {
               path="/upcoming-trip"
               render={() =>
                 currentUser ? <UpcomingTrip /> : <Redirect to="/login" />
+              }
+            />
+            <Route
+              exact
+              path="/my-profile"
+              render={() =>
+                currentUser ? <UserProfilePage /> : <Redirect to="/login" />
+              }
+            />
+            <Route
+              exact
+              path="/edit-profile"
+              render={() =>
+                currentUser ? <EditProfile /> : <Redirect to="/login" />
               }
             />
 

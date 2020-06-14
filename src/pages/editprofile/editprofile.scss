@@ -1,0 +1,122 @@
+$tablet: 850px;
+$smartphone: 500px;
+$iphoneX: 375px;
+$primaryColor: #000000;
+$secondaryColor: #ffffff;
+$shadow: 0px 3px 5px rgba(124, 124, 124, 0.747);
+
+// Mixin
+@mixin tablet {
+  @media (max-width: #{$tablet}) {
+    @content;
+  }
+}
+
+@mixin smartphone {
+  @media (max-width: #{$smartphone}) {
+    @content;
+  }
+}
+.profile-edit-page {
+.profile-edit {
+  width: 100%;
+  text-align: left;
+  margin-top: 0px;
+  padding: 0 20px;
+  .profile-edit-page-header {
+    span {
+      font-size: 1.1em;
+    }
+    .edit-control {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: $primaryColor;
+      padding: 10px 20px;
+      .cancel_title {
+        display: flex;
+        align-items: center;
+        span {
+          margin-left: 40px;
+          color: $secondaryColor;
+        }
+      }
+      .save {
+        font-size: .9em;
+        padding: 0.3em 2.5em;
+        border-radius: 200px;
+        border: 1.3px solid $secondaryColor;
+        color: $secondaryColor;
+        background-color: transparent;
+        cursor: pointer;
+      }
+    }
+    .profile-pic_buttons {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+      padding-left: 30px;
+      .profile-pic {
+        position: relative;
+          // margin-top: -120px;
+          height: 170px;
+          width: 170px;
+          border-radius: 30px;
+          box-shadow: $shadow;
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          @include smartphone(){
+          height: 120px;
+          width: 120px;
+          }
+          .pp {
+          position: absolute;
+          top: 70px;
+          right: 70px;
+          z-index: 2;
+           @include smartphone(){
+            transform: translate(30px, -30px);
+          }
+        }
+          .profile-pp {
+            // width: 106px;
+            height: 168px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            @include smartphone(){
+              height: 118px;
+            }
+          }
+          .profile-p {
+            // width: 106px;
+            height: 168px;
+          }
+      }
+    }
+  }
+  .upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    input[type='file'] {
+      cursor: pointer;
+      font-size: 100px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+    }
+  }
+  form {
+    padding: 0px 15%;
+    margin-top: 0px;
+    // width: 600px;
+  }
+}
+}

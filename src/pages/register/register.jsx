@@ -53,22 +53,22 @@ class Register extends Component {
         displayName,
         phone,
         age,
-        selectGender,
+        gender: selectGender,
       });
       this.setState({ isSuccess: true });
     } catch (error) {
       error.code === 'auth/email-already-in-use'
         ? this.setState({
-            isLoading: false,
-            errorMessage:
-              'The email address is already in use by another account',
-          })
+          isLoading: false,
+          errorMessage:
+            'The email address is already in use by another account',
+        })
         : error.code === 'auth/weak-password'
-        ? this.setState({
+          ? this.setState({
             isLoading: false,
             errorMessage: 'Password should be at least 6 characters',
           })
-        : this.setState({
+          : this.setState({
             isLoading: false,
             errorMessage: 'Shit just got real',
           });
