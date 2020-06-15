@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { auth } from '../../firebase/firebase.utils';
-import FormSelect from '../../components/form-select/form-select';
 // import StarRating from '../../components/rating/rating';
 import Spinner from '../../components/spinner/spinner';
 
