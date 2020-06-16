@@ -17,6 +17,10 @@ class EditProfile extends React.Component {
     website: '',
     profile_pic: '',
     location: '',
+    email: '',
+    phone: '',
+    age: '',
+    gender: '',
     isLoading: false,
   };
   componentDidMount() {
@@ -29,6 +33,18 @@ class EditProfile extends React.Component {
         : '',
       profile_pic: this.props.currentUser.profile_pic
         ? this.props.currentUser.profile_pic
+        : '',
+      email: this.props.currentUser.email
+        ? this.props.currentUser.email
+        : '',
+      phone: this.props.currentUser.phone
+        ? this.props.currentUser.phone
+        : '',
+      age: this.props.currentUser.age
+        ? this.props.currentUser.age
+        : '',
+      gender: this.props.currentUser.gender
+        ? this.props.currentUser.gender
         : '',
     });
   }
@@ -70,11 +86,19 @@ class EditProfile extends React.Component {
       fullName,
       location,
       profile_pic,
+      email,
+      phone,
+      age,
+      gender,
     } = this.state;
     const incomingData = {
       fullName,
       profile_pic,
       location,
+      email,
+      phone,
+      age,
+      gender,
     };
     await updateProfileData(this.props.currentUser.id, incomingData);
     this.props.history.push('/my-profile');
@@ -85,6 +109,10 @@ class EditProfile extends React.Component {
       fullName,
       location,
       profile_pic,
+      email,
+      phone,
+      age,
+      gender,
     } = this.state;
     return (
       <div className="profile-edit-page main">
@@ -127,6 +155,38 @@ class EditProfile extends React.Component {
                 name="fullName"
                 value={fullName}
                 label="Fullname"
+                onChange={this.handleChange}
+                edit
+              />
+              <FormInput
+                type="email"
+                name="email"
+                value={email}
+                label="Email"
+                onChange={this.handleChange}
+                edit
+              />
+              <FormInput
+                type="number"
+                name="phone"
+                value={phone}
+                label="Phone"
+                onChange={this.handleChange}
+                edit
+              />
+              <FormInput
+                type="number"
+                name="age"
+                value={age}
+                label="Age"
+                onChange={this.handleChange}
+                edit
+              />
+              <FormInput
+                type="text"
+                name="gender"
+                value={gender}
+                label="Gender"
                 onChange={this.handleChange}
                 edit
               />

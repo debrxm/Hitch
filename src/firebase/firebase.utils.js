@@ -59,6 +59,7 @@ export const updateTrip = async (tripId, numberOfPassanger, user) => {
   const userData = {
     id: user.id,
     name: user.displayName,
+    profile_pic: user.profile_pic && user.profile_pic,
     phone: user.phone,
     email: user.email,
   };
@@ -67,6 +68,8 @@ export const updateTrip = async (tripId, numberOfPassanger, user) => {
     let passangers = [];
     passangers = snapShot.data().passangers;
     passangers.push(userData);
+    console.log(snapShot.data().vacantSeats);
+
     try {
       await tripRef.update({
         vacantSeats: snapShot.data().vacantSeats - numberOfPassanger,
@@ -97,7 +100,7 @@ export const updateProfile = async (userId, tripId) => {
 };
 
 export const updateProfileData = async (userId, incomingData) => {
-  const { fullName, profile_pic, location, } = incomingData;
+  const { fullName, profile_pic, location, email, phone, age, gender, } = incomingData;
   const userRef = firestore.doc(`users/${userId}`);
   const snapShot = await userRef.get();
   if (snapShot.exists) {
@@ -106,6 +109,10 @@ export const updateProfileData = async (userId, incomingData) => {
         displayName: fullName,
         profile_pic,
         location,
+        email,
+        phone,
+        age,
+        gender,
       });
       return userRef;
     } catch (error) {

@@ -31,33 +31,26 @@ const TripPage = ({ trip, currentUser }) => {
   }, [currentUser.id, passangers]);
   const handleJoinTrip = async (e) => {
     e.preventDefault();
-    if (state.numberOfPassanger) {
-      await updateTrip(id, state.numberOfPassanger, currentUser);
-      const { displayName, phone, email } = currentUser;
-      const url = 'https://treep-back-end.herokuapp.com/jointrip';
-      // const url = 'http://localhost:8080/jointrip';
-      const messageHtml = Message({
-        displayName,
-        phone,
-        email,
-        destination,
-        date,
-        driver,
-      });
-      const messageToSend = {
-        email: driver.email,
-        subject: `New Message From Treep`,
-        html: messageHtml,
-      };
-      PostFetch(url, messageToSend);
-      setState({ isSuccess: true });
-    }
-  };
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setState({
-      [name]: value,
+    console.log(id, 1, currentUser);
+    await updateTrip(id, 1, currentUser);
+    const { displayName, phone, email } = currentUser;
+    const url = 'https://treep-back-end.herokuapp.com/jointrip';
+    // const url = 'http://localhost:8080/jointrip';
+    const messageHtml = Message({
+      displayName,
+      phone,
+      email,
+      destination,
+      date,
+      driver,
     });
+    const messageToSend = {
+      email: driver.email,
+      subject: `New Message From Treep`,
+      html: messageHtml,
+    };
+    PostFetch(url, messageToSend);
+    setState({ isSuccess: true });
   };
   return (
     <div className="trip-page">
@@ -88,6 +81,27 @@ const TripPage = ({ trip, currentUser }) => {
             <span>{date ? date : '2020-05-21'}</span>
             <span>{time ? time : '2:40'}</span>
           </div>
+          <div className="trip-owner">
+            <img src={driver.profile_pic ? driver.profile_pic : 'https://user-images.githubusercontent.com/1927295/68068778-fed0c900-fd69-11e9-95c1-29dd8e8134af.png'} alt="driver pic" />
+            <div className="text-content">
+              <span className="driver-name">
+                <strong>Driver</strong>: <small>{driver.id === currentUser.id ? 'You' : driver.name}</small>
+              </span>
+              <br />
+              <span className="driver-age">
+                <strong>Age</strong>: <small>{driver.age ? driver.age : '-'}</small>
+              </span>
+              <br />
+              <span className="driver-email">
+                <strong>Gender</strong>: <small>{driver.gender ? driver.gender : '-'}</small>
+              </span>
+              <br />
+              <span className="driver-phone">
+                <strong>Phone</strong>: <small>{driver.phone}</small>
+              </span>
+            </div>
+          </div>
+          <br />
           <span className="vacant">
             {' '}
             {vacantSeats ? vacantSeats : 0} seat(s) available
@@ -98,21 +112,17 @@ const TripPage = ({ trip, currentUser }) => {
           <span className="car-type">{carType ? carType : 'Jeep'}</span>
           <br />
           <span className="car-type">
-            {numberPlate ? numberPlate : 'YTW653T'}
+            <strong>Number Plate:</strong> <small>{numberPlate ? numberPlate : 'YTW653T'}</small>
           </span>
           <br />
-          <span className="car-type">
-            {driver.id === currentUser.id ? 'You' : driver.name} created this
-            trip
-          </span>
-          <br />
-          <span className="car-type">Contact: {driver.phone}</span>
+
           <div className="passangers">
-            <h6>Passanger(s):</h6>
+            <h6>Passanger(s): {passangers.length}</h6>
             <ul>
               {passangers.map((item, index) => (
                 <li key={index} className="passanger">
-                  {item.name}
+                  <img src={item.profile_pic ? item.profile_pic : 'https://p7.hiclipart.com/preview/702/518/323/passenger-computer-icons-travel-baggage-business-travel.jpg'} alt="passanger pic" />
+                  <span>{item.name}</span>
                 </li>
               ))}
             </ul>
@@ -120,7 +130,7 @@ const TripPage = ({ trip, currentUser }) => {
         </div>
         {driver.id === currentUser.id ? (
           <button className="btn edit" style={{ marginTop: '15px' }}>
-            Edit
+            You Created This Trip
           </button>
         ) : state.isPassanger ? (
           <button className="btn joined" style={{ marginTop: '15px' }}>
@@ -135,21 +145,10 @@ const TripPage = ({ trip, currentUser }) => {
             No Vacant Seat
           </button>
         ) : (
-          <form onSubmit={handleJoinTrip}>
-            <input
-              type="number"
-              className="form-input"
-              name="numberOfPassanger"
-              value={state.numberOfPassanger}
-              placeholder="No of passanger"
-              max={vacantSeats}
-              onChange={handleChange}
-            />
-            <button className="btn">Join Trip</button>
-          </form>
-        )}
+                  <button className="btn" onClick={handleJoinTrip}>Join Trip</button>
+                )}
       </div>
-      <div className="car-image">Car Image</div>
+      {/* <div className="car-image">Car Image</div> */}
     </div>
   );
 };

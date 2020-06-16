@@ -39,6 +39,9 @@ const UserProfilePage = ({ currentUser, history }) => {
               </div>
             </div>
           </div>
+          <div className="user-details">
+            No of Trips Created: {currentUser.trips && currentUser.trips.length}
+          </div>
         </div>
       ) : (
           <Spinner />

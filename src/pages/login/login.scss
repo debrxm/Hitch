@@ -36,18 +36,19 @@ $smartphone: 500px;
   }
   .home {
     position: fixed;
-    top: 0;
+    top: 5px;
     right: 0;
     left: 0;
     height: 80px;
     display: flex;
     padding: 20px;
-    // justify-content: center;
+    justify-content: center;
     align-items: center;
     img {
       width: 25px;
       height: 25px;
     }
+    z-index: 99999;
   }
   .error {
     position: fixed;

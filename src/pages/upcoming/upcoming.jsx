@@ -8,7 +8,7 @@ const UpcomingTrip = ({ trips }) => {
   const [state, setState] = useState({ upcoming: [] });
   useEffect(() => {
     const upcoming = [];
-    trips.forEach((item) => {
+    trips && trips.forEach((item) => {
       let end = new Date(`${item.date} ${item.time}`);
       let now = new Date();
       let distance = end - now;

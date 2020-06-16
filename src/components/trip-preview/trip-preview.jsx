@@ -57,19 +57,13 @@ const TripPreview = ({ trip, history, currentUser, expired }) => {
       setState({ isSuccess: true });
     }
   };
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setState({
-      [name]: value,
-    });
-  };
   return (
-    <div className="trip-preview" onClick={goToTripPage}>
+    <div className="trip-preview" >
       {state.isSuccess ? (
         <span className="success">Trip Successfully Joined</span>
       ) : null}
       <div className="trip-preview-info">
-        <div className="trip-info">
+        <div className="trip-info" onClick={goToTripPage}>
           <div className="trip-info-head">
             <span>{pickUpPoint ? pickUpPoint : 'Kano'}</span>
             <span>
@@ -92,6 +86,27 @@ const TripPreview = ({ trip, history, currentUser, expired }) => {
             <span>{date ? date : '2020-05-21'}</span>
             <span>{time ? time : '2:40'}</span>
           </div>
+          <div className="trip-owner">
+            <img src={driver.profile_pic ? driver.profile_pic : 'https://user-images.githubusercontent.com/1927295/68068778-fed0c900-fd69-11e9-95c1-29dd8e8134af.png'} alt="driver pic" />
+            <div className="text-content">
+              <span className="driver-name">
+                <strong>Driver</strong>: <small>{driver.id === currentUser.id ? 'You' : driver.name}</small>
+              </span>
+              <br />
+              <span className="driver-age">
+                <strong>Age</strong>: <small>{driver.age ? driver.age : '-'}</small>
+              </span>
+              <br />
+              <span className="driver-email">
+                <strong>Gender</strong>: <small>{driver.gender ? driver.gender : '-'}</small>
+              </span>
+              <br />
+              <span className="driver-phone">
+                <strong>Phone</strong>: <small>{driver.phone}</small>
+              </span>
+            </div>
+          </div>
+          <br />
           <span className="vacant">
             {' '}
             {vacantSeats ? vacantSeats : 0} seat(s) available
@@ -105,10 +120,7 @@ const TripPreview = ({ trip, history, currentUser, expired }) => {
             {numberPlate ? numberPlate : 'YTW653T'}
           </span>
           <br />
-          <span className="car-type">
-            {driver.id === currentUser.id ? 'You' : driver.name} created this
-            trip
-          </span>
+
         </div>
         {expired ? (
           <button className="btn no-vacant" style={{ marginTop: '15px' }}>
@@ -116,7 +128,7 @@ const TripPreview = ({ trip, history, currentUser, expired }) => {
           </button>
         ) : driver.id === currentUser.id ? (
           <button className="btn edit" style={{ marginTop: '15px' }}>
-            Edit
+            You Created This Trip
           </button>
         ) : state.isPassanger ? (
           <button className="btn joined" style={{ marginTop: '15px' }}>
@@ -131,21 +143,10 @@ const TripPreview = ({ trip, history, currentUser, expired }) => {
             No Vacant Seat
           </button>
         ) : (
-          <form onSubmit={handleJoinTrip}>
-            <input
-              type="number"
-              className="form-input"
-              name="numberOfPassanger"
-              value={state.numberOfPassanger}
-              placeholder="No of passanger"
-              max={vacantSeats}
-              onChange={handleChange}
-            />
-            <button className="btn">Join Trip</button>
-          </form>
-        )}
+                    <button className="btn" onClick={handleJoinTrip}>Join Trip</button>
+                  )}
       </div>
-      <div className="car-image">Car Image</div>
+      {/* <div className="car-image">Car Image</div> */}
     </div>
   );
 };

@@ -52,6 +52,8 @@ class CreateRide extends Component {
           name: this.props.currentUser.displayName,
           phone: this.props.currentUser.phone,
           email: this.props.currentUser.email,
+          age: this.props.currentUser.age,
+          gender: this.props.currentUser.gender,
           profile_pic: this.props.currentUser.profile_pic ? this.props.currentUser.profile_pic : ''
         },
         pickUpPoint: pickUpPoint.toLocaleLowerCase(),
