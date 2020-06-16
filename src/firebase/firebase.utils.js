@@ -68,8 +68,6 @@ export const updateTrip = async (tripId, numberOfPassanger, user) => {
     let passangers = [];
     passangers = snapShot.data().passangers;
     passangers.push(userData);
-    console.log(snapShot.data().vacantSeats);
-
     try {
       await tripRef.update({
         vacantSeats: snapShot.data().vacantSeats - numberOfPassanger,

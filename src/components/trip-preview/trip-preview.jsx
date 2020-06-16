@@ -35,27 +35,25 @@ const TripPreview = ({ trip, history, currentUser, expired }) => {
   };
   const handleJoinTrip = async (e) => {
     e.preventDefault();
-    if (state.numberOfPassanger) {
-      await updateTrip(id, state.numberOfPassanger, currentUser);
-      const { displayName, phone, email } = currentUser;
-      const url = 'https://treep-back-end.herokuapp.com/jointrip';
-      // const url = 'http://localhost:8080/jointrip';
-      const messageHtml = Message({
-        displayName,
-        phone,
-        email,
-        destination,
-        date,
-        driver,
-      });
-      const messageToSend = {
-        email: driver.email,
-        subject: `New Message From Treep`,
-        html: messageHtml,
-      };
-      PostFetch(url, messageToSend);
-      setState({ isSuccess: true });
-    }
+    await updateTrip(id, 1, currentUser);
+    const { displayName, phone, email } = currentUser;
+    const url = 'https://treep-back-end.herokuapp.com/jointrip';
+    // const url = 'http://localhost:8080/jointrip';
+    const messageHtml = Message({
+      displayName,
+      phone,
+      email,
+      destination,
+      date,
+      driver,
+    });
+    const messageToSend = {
+      email: driver.email,
+      subject: `New Message From Treep`,
+      html: messageHtml,
+    };
+    PostFetch(url, messageToSend);
+    setState({ isSuccess: true });
   };
   return (
     <div className="trip-preview" >
