@@ -67,6 +67,32 @@ button {
 a {
   font-size: 15px;
 }
+
+html {
+  height: 100vh;
+  background: radial-gradient(ellipse at bottom, #030303 0%, #030617 100%);
+}
+$lineColor: #707070;
+$step: 10;
+$borderWeight: 5px;
+
+@function borderShadow($n) {
+  $value: '0px 0px #{$lineColor}';
+  @for $i from 0 through $n {
+    $value: '#{$value} , 0px #{($step)*$i}px #{$lineColor}';
+  }
+  @return unquote($value);
+}
+@function stripeShadow($n) {
+  $value: '0px 0px #{$lineColor}';
+  @for $i from 0 through $n {
+    $value: '#{$value} , #{($step)*$i}px 0px #{$lineColor}';
+  }
+  @return unquote($value);
+}
+$border: borderShadow(1000);
+$stripe: stripeShadow(1000);
+
 .App {
   display: flex;
   .wrapper {
@@ -77,6 +103,7 @@ a {
     width: 100%;
     max-width: 414px;
     background-color: white;
+    box-shadow:  0px 3px 5px 3px rgba(133, 131, 131, 0.75);
     // overflow-x: hidden;
   }
   .success {

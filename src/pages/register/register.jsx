@@ -55,7 +55,7 @@ class Register extends Component {
         age,
         gender: selectGender,
       });
-      this.setState({ isSuccess: true });
+      this.setState({ isSuccess: true }, () => this.props.history.push('/edit-profile'));
     } catch (error) {
       error.code === 'auth/email-already-in-use'
         ? this.setState({
