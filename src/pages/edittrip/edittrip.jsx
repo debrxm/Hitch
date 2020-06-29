@@ -122,9 +122,7 @@ class EditTrip extends Component {
       destination,
       date,
       time,
-      vacantSeats,
       numberPlate,
-      seatCost,
       carType,
       description,
       today,
@@ -197,7 +195,7 @@ class EditTrip extends Component {
             <FormInput
               type="number"
               name="vacantSeats"
-              value={vacantSeats}
+              value={this.props.editTrip.vacantSeats}
               required
               handleChange={this.handleChange}
               label="Vacant Seats"
@@ -205,7 +203,7 @@ class EditTrip extends Component {
             <FormInput
               type="number"
               name="seatCost"
-              value={seatCost}
+              value={this.props.editTrip.seatCost}
               required
               handleChange={this.handleChange}
               label="Seat Cost"
