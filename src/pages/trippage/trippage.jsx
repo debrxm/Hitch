@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import { selectATrip } from '../../redux/trip/trip.selectors';
 import { updateTrip } from '../../firebase/firebase.utils';
 import { PostFetch, Message } from '../../components/email/message';
+import { editTrip } from '../../redux/trip/trip.actions';
 import './trippage.scss';
-const TripPage = ({ trip, currentUser }) => {
+const TripPage = ({ trip, currentUser, history, editTrip }) => {
   const {
     driver,
     pickUpPoint,
@@ -29,6 +30,10 @@ const TripPage = ({ trip, currentUser }) => {
       return item.id === currentUser.id ? setState({ isPassanger: true }) : '';
     });
   }, [currentUser.id, passangers]);
+  const goToEditTripPage = () => {
+    editTrip(trip[0]);
+    history.push(`/edit-trip`);
+  };
   const handleJoinTrip = async (e) => {
     e.preventDefault();
     console.log(id, 1, currentUser);
@@ -82,18 +87,30 @@ const TripPage = ({ trip, currentUser }) => {
             <span>{time ? time : '2:40'}</span>
           </div>
           <div className="trip-owner">
-            <img src={driver.profile_pic ? driver.profile_pic : 'https://user-images.githubusercontent.com/1927295/68068778-fed0c900-fd69-11e9-95c1-29dd8e8134af.png'} alt="driver pic" />
+            <img
+              src={
+                driver.profile_pic
+                  ? driver.profile_pic
+                  : 'https://user-images.githubusercontent.com/1927295/68068778-fed0c900-fd69-11e9-95c1-29dd8e8134af.png'
+              }
+              alt="driver pic"
+            />
             <div className="text-content">
               <span className="driver-name">
-                <strong>Driver</strong>: <small>{driver.id === currentUser.id ? 'You' : driver.name}</small>
+                <strong>Driver</strong>:{' '}
+                <small>
+                  {driver.id === currentUser.id ? 'You' : driver.name}
+                </small>
               </span>
               <br />
               <span className="driver-age">
-                <strong>Age</strong>: <small>{driver.age ? driver.age : '-'}</small>
+                <strong>Age</strong>:{' '}
+                <small>{driver.age ? driver.age : '-'}</small>
               </span>
               <br />
               <span className="driver-email">
-                <strong>Gender</strong>: <small>{driver.gender ? driver.gender : '-'}</small>
+                <strong>Gender</strong>:{' '}
+                <small>{driver.gender ? driver.gender : '-'}</small>
               </span>
               <br />
               <span className="driver-phone">
@@ -112,7 +129,8 @@ const TripPage = ({ trip, currentUser }) => {
           <span className="car-type">{carType ? carType : 'Jeep'}</span>
           <br />
           <span className="car-type">
-            <strong>Number Plate:</strong> <small>{numberPlate ? numberPlate : 'YTW653T'}</small>
+            <strong>Number Plate:</strong>{' '}
+            <small>{numberPlate ? numberPlate : 'YTW653T'}</small>
           </span>
           <br />
 
@@ -121,7 +139,14 @@ const TripPage = ({ trip, currentUser }) => {
             <ul>
               {passangers.map((item, index) => (
                 <li key={index} className="passanger">
-                  <img src={item.profile_pic ? item.profile_pic : 'https://p7.hiclipart.com/preview/702/518/323/passenger-computer-icons-travel-baggage-business-travel.jpg'} alt="passanger pic" />
+                  <img
+                    src={
+                      item.profile_pic
+                        ? item.profile_pic
+                        : 'https://p7.hiclipart.com/preview/702/518/323/passenger-computer-icons-travel-baggage-business-travel.jpg'
+                    }
+                    alt="passanger pic"
+                  />
                   <span>{item.name}</span>
                 </li>
               ))}
@@ -129,8 +154,12 @@ const TripPage = ({ trip, currentUser }) => {
           </div>
         </div>
         {driver.id === currentUser.id ? (
-          <button className="btn edit" style={{ marginTop: '15px' }}>
-            You Created This Trip
+          <button
+            className="btn edit"
+            style={{ marginTop: '15px' }}
+            onClick={goToEditTripPage}
+          >
+            Edit
           </button>
         ) : state.isPassanger ? (
           <button className="btn joined" style={{ marginTop: '15px' }}>
@@ -145,17 +174,25 @@ const TripPage = ({ trip, currentUser }) => {
             No Vacant Seat
           </button>
         ) : (
-                  <button className="btn" onClick={handleJoinTrip}>Join Trip</button>
-                )}
+          <button className="btn" onClick={handleJoinTrip}>
+            Join Trip
+          </button>
+        )}
       </div>
       {/* <div className="car-image">Car Image</div> */}
     </div>
   );
 };
+const mapDispatchToProps = (dispatch) => ({
+  editTrip: (trip) => dispatch(editTrip(trip)),
+});
+
 const mapStateToProps = (state, ownProps) => {
   return {
     trip: selectATrip(ownProps.match.params.tripId, ownProps.match.url)(state),
     currentUser: state.user.currentUser,
   };
 };
-export default withRouter(connect(mapStateToProps)(TripPage));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(TripPage)
+);

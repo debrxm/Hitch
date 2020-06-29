@@ -22,6 +22,7 @@ import FoundTripPage from './pages/foundtrippage/foundtrippage';
 import UpcomingTrip from './pages/upcoming/upcoming';
 import History from './pages/history/history';
 import TripPage from './pages/trippage/trippage';
+import EditTrip from './pages/edittrip/edittrip';
 import AllTripPage from './pages/alltrip/alltrip';
 import UserProfilePage from './pages/user-profile-page/user-profile-page';
 import EditProfile from './pages/editprofile/editprofile';
@@ -96,6 +97,13 @@ class App extends React.Component {
               path="/upcoming-trip"
               render={() =>
                 currentUser ? <UpcomingTrip /> : <Redirect to="/login" />
+              }
+            />
+            <Route
+              exact
+              path="/edit-trip"
+              render={() =>
+                currentUser ? <EditTrip /> : <Redirect to="/login" />
               }
             />
             <Route

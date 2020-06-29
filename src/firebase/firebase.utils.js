@@ -43,11 +43,19 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   return userRef;
 };
 
-
 export const createTrip = async (trip, id) => {
   const newTripRef = firestore.collection(`trips`).doc(`${id}`);
   try {
     await newTripRef.set(trip);
+    return newTripRef;
+  } catch (error) {
+    console.log('Error Creating Trip', error.message);
+  }
+};
+export const editTrip = async (trip, id) => {
+  const newTripRef = firestore.doc(`trips/${id}`);
+  try {
+    await newTripRef.update(trip);
     return newTripRef;
   } catch (error) {
     console.log('Error Creating Trip', error.message);
@@ -98,7 +106,15 @@ export const updateProfile = async (userId, tripId) => {
 };
 
 export const updateProfileData = async (userId, incomingData) => {
-  const { fullName, profile_pic, location, email, phone, age, gender, } = incomingData;
+  const {
+    fullName,
+    profile_pic,
+    location,
+    email,
+    phone,
+    age,
+    gender,
+  } = incomingData;
   const userRef = firestore.doc(`users/${userId}`);
   const snapShot = await userRef.get();
   if (snapShot.exists) {

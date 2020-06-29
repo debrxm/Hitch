@@ -1,0 +1,100 @@
+$tablet: 850px;
+$smartphone: 500px;
+$iphoneX: 375px;
+$primaryColor: #000000;
+$secondaryColor: #ffffff;
+$shadow: 0px 3px 5px rgba(124, 124, 124, 0.747);
+
+// Mixin
+@mixin tablet {
+  @media (max-width: #{$tablet}) {
+    @content;
+  }
+}
+
+@mixin smartphone {
+  @media (max-width: #{$smartphone}) {
+    @content;
+  }
+}
+@mixin iphoneX {
+  @media (max-width: #{$iphoneX}) {
+    @content;
+  }
+}
+@mixin shrinkLabel {
+  top: -18px;
+  font-size: 13px;
+  color: gray;
+}
+.create-ride {
+  // padding: 0 20px;
+  .title {
+    padding: 10px 20px;
+  }
+  form {
+    padding: 0 20px;
+    height: calc(100vh - 130px);
+    overflow-y: hidden;
+    @include iphoneX() {
+      overflow-y: scroll;
+    }
+    &:hover {
+      overflow-y: scroll;
+    }
+    .text-area {
+      position: relative;
+
+      .expand {
+        height: 100px;
+      }
+
+      textarea {
+        background: none;
+        background-color: transparent;
+        font-size: 18px;
+        padding: 10px 10px 10px 5px;
+        display: block;
+        width: 100%;
+        border: none;
+        border-radius: 0;
+        border-bottom: 1px solid gray;
+        margin: 25px 0;
+        color: gray;
+        transition: all 0.5s;
+
+        &:focus {
+          outline: none;
+          height: 100px;
+        }
+
+        &:focus ~ .form-input-label {
+          @include shrinkLabel();
+        }
+      }
+
+      .form-input-label {
+        color: gray;
+        font-size: 17px;
+        font-weight: normal;
+        position: absolute;
+        pointer-events: none;
+        left: 5px;
+        top: 10px;
+        transition: 300ms ease all;
+
+        &.shrink {
+          @include shrinkLabel();
+        }
+      }
+
+      button {
+        img {
+          height: 20px;
+          width: 20px;
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+}

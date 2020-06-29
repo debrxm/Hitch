@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './footer.scss';
 const Footer = () => {
+  // const year = () => new Date().getFullYear;
   return (
     <footer className="footer">
       <div className="btns">
@@ -12,7 +13,7 @@ const Footer = () => {
           <button className="btn">Create Trip</button>
         </Link>
       </div>
-      <p className="copyright">&copy; Hitch {new Date().getFullYear}</p>
+      {/* <p className="copyright">&copy; Hitch {year}</p> */}
     </footer>
   );
 };

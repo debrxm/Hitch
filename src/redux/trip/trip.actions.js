@@ -8,3 +8,7 @@ export const setFoundTrip = (trip) => ({
   type: tripActionTypes.SET_FOUND_TRIP,
   payload: trip,
 });
+export const editTrip = (trip) => ({
+  type: tripActionTypes.EDIT_TRIP,
+  payload: trip,
+});

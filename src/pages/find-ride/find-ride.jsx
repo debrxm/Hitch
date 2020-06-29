@@ -6,37 +6,71 @@ import CustomButton from '../../components/custom-button/custom-button';
 import { setFoundTrip } from '../../redux/trip/trip.actions';
 import loader from '../../assets/loader.gif';
 import left from '../../assets/left.svg';
+import FormInput from '../../components/form-input/form-input';
+import FormSelect from '../../components/form-select/form-select';
 
 import './find-ride.scss';
-import FormSelect from '../../components/form-select/form-select';
 class FindRide extends Component {
   state = {
     location: '',
     destination: '',
+    date: '',
+    time: '',
+    today: '',
     errorMessage: '',
     isLoading: false,
   };
-  // toBase64 = (file) =>
-  //   new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(file);
-  //     reader.onload = () => resolve(reader.result);
-  //     reader.onerror = (error) => reject(error);
-  //   });
+  handleChange = (event) => {
+    const { name, value } = event.target;
+    this.setState(
+      {
+        [name]: value,
+        errorMessage: '',
+      },
+      () => console.log(this.state)
+    );
+  };
   handleSubmit = async (event) => {
     event.preventDefault();
-    const { location, destination } = this.state;
+    const { location, destination, date, time } = this.state;
     try {
       this.setState({ isLoading: true });
       const tripUrl =
-        location !== ''
+        location !== '' && destination !== '' && date !== '' && time !== ''
           ? firestore
               .collection(`trips`)
               .where('pickUpPoint', '==', `${location.toLowerCase()}`)
               .where('destination', '==', `${destination.toLowerCase()}`)
-          : firestore
+              .where('date', '==', `${date}`)
+              .where('time', '==', `${time}`)
+          : location !== '' && destination !== ''
+          ? firestore
               .collection(`trips`)
-              .where('destination', '==', `${destination.toLowerCase()}`);
+              .where('pickUpPoint', '==', `${location.toLowerCase()}`)
+              .where('destination', '==', `${destination.toLowerCase()}`)
+          : destination !== '' && date !== ''
+          ? firestore
+              .collection(`trips`)
+              .where('destination', '==', `${destination.toLowerCase()}`)
+              .where('date', '==', `${date}`)
+          : destination !== '' && time !== ''
+          ? firestore
+              .collection(`trips`)
+              .where('destination', '==', `${destination.toLowerCase()}`)
+              .where('time', '==', `${time}`)
+          : date !== '' && time !== ''
+          ? firestore
+              .collection(`trips`)
+              .where('date', '==', `${date}`)
+              .where('time', '==', `${time}`)
+          : destination !== ''
+          ? firestore
+              .collection(`trips`)
+              .where('destination', '==', `${destination.toLowerCase()}`)
+          : date !== ''
+          ? firestore.collection(`trips`).where('date', '==', `${date}`)
+          : firestore.collection(`trips`).where('time', '==', `${time}`);
+
       const tripRef = tripUrl;
       tripRef.onSnapshot((snapshot) => {
         const trips = [];
@@ -62,15 +96,25 @@ class FindRide extends Component {
 
     this.setState({ location: '', destination: '' });
   };
-  handleChange = (event) => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value,
-      errorMessage: '',
-    });
-  };
+  componentDidMount() {
+    const now = new Date();
+
+    const day = ('0' + (now.getDate() + 1)).slice(-2);
+    const month = ('0' + (now.getMonth() + 1)).slice(-2);
+
+    const today = now.getFullYear() + '-' + month + '-' + day;
+    this.setState({ today });
+  }
   render() {
-    const { location, destination, errorMessage, isLoading } = this.state;
+    const {
+      location,
+      destination,
+      date,
+      time,
+      today,
+      errorMessage,
+      isLoading,
+    } = this.state;
     return (
       <div className="find-ride">
         <div>
@@ -168,6 +212,27 @@ class FindRide extends Component {
                 'Tumpat',
                 'Victoria',
               ]}
+            />
+            <FormInput
+              type="text"
+              name="date"
+              value={date}
+              required
+              min={today}
+              handleChange={this.handleChange}
+              onFocus={(e) => (e.target.type = 'date')}
+              onBlur={(e) => (e.target.type = 'text')}
+              label="Trip Date"
+            />
+            <FormInput
+              type="text"
+              name="time"
+              value={time}
+              required
+              handleChange={this.handleChange}
+              onFocus={(e) => (e.target.type = 'time')}
+              onBlur={(e) => (e.target.type = 'text')}
+              label="Trip Time"
             />
             <div className="buttons">
               <CustomButton type="button" onClick={this.handleSubmit}>

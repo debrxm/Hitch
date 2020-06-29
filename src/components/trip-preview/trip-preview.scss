@@ -38,10 +38,7 @@ $shadow: 0px 3px 5px rgba(124, 124, 124, 0.747);
   }
   // text-align: center;
   .trip-preview-info {
-    width: 70%;
-    @include iphoneX() {
-      width: 100%;
-    }
+    width: 100%;
     span {
       letter-spacing: 1px;
       font-weight: 500;
@@ -77,19 +74,18 @@ $shadow: 0px 3px 5px rgba(124, 124, 124, 0.747);
       .car-type,
       .cost {
         font-size: 13px;
-        
       }
-      .trip-owner{
+      .trip-owner {
         text-align: left;
         display: flex;
         align-items: center;
-        img{
+        img {
           height: 100px;
           width: 100px;
           margin-right: 10px;
         }
-        .text-content{
-          span{
+        .text-content {
+          span {
             font-size: 12px;
             white-space: nowrap;
           }

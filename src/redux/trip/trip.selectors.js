@@ -10,6 +10,10 @@ export const selectFoundTrip = createSelector(
   [selectTrip],
   (trip) => trip.foundTrip
 );
+export const selectEditTrip = createSelector(
+  [selectTrip],
+  (trip) => trip.editTrip
+);
 export const selectATrip = (tripId, url) =>
   createSelector([selectAllTrip], (trip) =>
     trip.filter((item, index) => item.id === tripId)
@@ -24,7 +28,7 @@ export const selectUpcomingTrips = () =>
       if (distance > 0) {
         upcoming.push(item);
       }
-      return upcoming
+      return upcoming;
     })
   );
 export const selectJoinedTrip = (userId) =>

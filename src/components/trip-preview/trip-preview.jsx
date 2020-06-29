@@ -6,7 +6,8 @@ import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { updateTrip } from '../../firebase/firebase.utils';
 import { PostFetch, Message } from '../../components/email/message';
 import './trip-preview.scss';
-const TripPreview = ({ trip, history, currentUser, expired }) => {
+import { editTrip } from '../../redux/trip/trip.actions';
+const TripPreview = ({ trip, history, currentUser, expired, editTrip }) => {
   const {
     driver,
     pickUpPoint,
@@ -33,6 +34,10 @@ const TripPreview = ({ trip, history, currentUser, expired }) => {
   const goToTripPage = () => {
     history.push(`/trips/${id}`);
   };
+  const goToEditTripPage = () => {
+    editTrip(trip);
+    history.push(`/edit-trip`);
+  };
   const handleJoinTrip = async (e) => {
     e.preventDefault();
     await updateTrip(id, 1, currentUser);
@@ -56,7 +61,7 @@ const TripPreview = ({ trip, history, currentUser, expired }) => {
     setState({ isSuccess: true });
   };
   return (
-    <div className="trip-preview" >
+    <div className="trip-preview">
       {state.isSuccess ? (
         <span className="success">Trip Successfully Joined</span>
       ) : null}
@@ -85,18 +90,30 @@ const TripPreview = ({ trip, history, currentUser, expired }) => {
             <span>{time ? time : '2:40'}</span>
           </div>
           <div className="trip-owner">
-            <img src={driver.profile_pic ? driver.profile_pic : 'https://user-images.githubusercontent.com/1927295/68068778-fed0c900-fd69-11e9-95c1-29dd8e8134af.png'} alt="driver pic" />
+            <img
+              src={
+                driver.profile_pic
+                  ? driver.profile_pic
+                  : 'https://user-images.githubusercontent.com/1927295/68068778-fed0c900-fd69-11e9-95c1-29dd8e8134af.png'
+              }
+              alt="driver pic"
+            />
             <div className="text-content">
               <span className="driver-name">
-                <strong>Driver</strong>: <small>{driver.id === currentUser.id ? 'You' : driver.name}</small>
+                <strong>Driver</strong>:{' '}
+                <small>
+                  {driver.id === currentUser.id ? 'You' : driver.name}
+                </small>
               </span>
               <br />
               <span className="driver-age">
-                <strong>Age</strong>: <small>{driver.age ? driver.age : '-'}</small>
+                <strong>Age</strong>:{' '}
+                <small>{driver.age ? driver.age : '-'}</small>
               </span>
               <br />
               <span className="driver-email">
-                <strong>Gender</strong>: <small>{driver.gender ? driver.gender : '-'}</small>
+                <strong>Gender</strong>:{' '}
+                <small>{driver.gender ? driver.gender : '-'}</small>
               </span>
               <br />
               <span className="driver-phone">
@@ -118,15 +135,18 @@ const TripPreview = ({ trip, history, currentUser, expired }) => {
             {numberPlate ? numberPlate : 'YTW653T'}
           </span>
           <br />
-
         </div>
         {expired ? (
           <button className="btn no-vacant" style={{ marginTop: '15px' }}>
             Expired
           </button>
         ) : driver.id === currentUser.id ? (
-          <button className="btn edit" style={{ marginTop: '15px' }}>
-            You Created This Trip
+          <button
+            className="btn edit"
+            style={{ marginTop: '15px' }}
+            onClick={goToEditTripPage}
+          >
+            Edit
           </button>
         ) : state.isPassanger ? (
           <button className="btn joined" style={{ marginTop: '15px' }}>
@@ -141,15 +161,21 @@ const TripPreview = ({ trip, history, currentUser, expired }) => {
             No Vacant Seat
           </button>
         ) : (
-                    <button className="btn" onClick={handleJoinTrip}>Join Trip</button>
-                  )}
+          <button className="btn" onClick={handleJoinTrip}>
+            Join Trip
+          </button>
+        )}
       </div>
       {/* <div className="car-image">Car Image</div> */}
     </div>
   );
 };
-
+const mapDispatchToProps = (dispatch) => ({
+  editTrip: (trip) => dispatch(editTrip(trip)),
+});
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
 });
-export default withRouter(connect(mapStateToProps)(TripPreview));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(TripPreview)
+);
