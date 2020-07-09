@@ -5,7 +5,7 @@ import { selectEditTrip } from '../../redux/trip/trip.selectors';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { Link, withRouter } from 'react-router-dom';
 import FormInput from '../../components/form-input/form-input';
-import { editTrip } from '../../firebase/firebase.utils';
+import { editTrip, cancelTrip } from '../../firebase/firebase.utils';
 // import { GenerateId } from '../../utils/id-generator';
 import CustomButton from '../../components/custom-button/custom-button';
 import loader from '../../assets/loader.gif';
@@ -107,6 +107,10 @@ class EditTrip extends Component {
       errorMessage: '',
     });
   };
+  handleCancelTrip = async () => {
+    await cancelTrip(this.props.editTrip.id);
+    this.props.history.push('/home');
+  };
   componentDidMount() {
     const now = new Date();
 
@@ -139,7 +143,12 @@ class EditTrip extends Component {
           <span className="success">Trip Successfully Edited</span>
         ) : null}
         <div>
-          <h3 className="title">EDIT TRIP</h3>
+          <div className="edit-head">
+            <h3 className="title">EDIT TRIP</h3>{' '}
+            <span className="cancel-trip" onClick={this.handleCancelTrip}>
+              Cancel Trip
+            </span>
+          </div>
           <form onSubmit={this.handleSubmit}>
             <FormSelect
               name="pickUpPoint"

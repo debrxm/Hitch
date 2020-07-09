@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
-import { updateTrip } from '../../firebase/firebase.utils';
+import { updateTrip, unJoinTrip } from '../../firebase/firebase.utils';
 import { PostFetch, Message } from '../../components/email/message';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './trip-preview.scss';
 import { editTrip } from '../../redux/trip/trip.actions';
 const TripPreview = ({ trip, history, currentUser, expired, editTrip }) => {
@@ -38,12 +40,13 @@ const TripPreview = ({ trip, history, currentUser, expired, editTrip }) => {
     editTrip(trip);
     history.push(`/edit-trip`);
   };
+
   const handleJoinTrip = async (e) => {
     e.preventDefault();
     await updateTrip(id, 1, currentUser);
     const { displayName, phone, email } = currentUser;
-    const url = 'https://treep-back-end.herokuapp.com/jointrip';
-    // const url = 'http://localhost:8080/jointrip';
+    // const url = 'https://treep-back-end.herokuapp.com/jointrip';
+    const url = 'http://localhost:8080/jointrip';
     const messageHtml = Message({
       displayName,
       phone,
@@ -59,7 +62,32 @@ const TripPreview = ({ trip, history, currentUser, expired, editTrip }) => {
     };
     PostFetch(url, messageToSend);
     setState({ isSuccess: true });
+    toast('Trip Successfully Joined!', {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    return <ToastContainer />;
   };
+
+  const handleUnjoinTrip = async (e) => {
+    e.preventDefault();
+    await unJoinTrip(id, currentUser.id);
+    toast('Trip Successfully Canceled!', {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
   return (
     <div className="trip-preview">
       {state.isSuccess ? (
@@ -149,12 +177,20 @@ const TripPreview = ({ trip, history, currentUser, expired, editTrip }) => {
             Edit
           </button>
         ) : state.isPassanger ? (
-          <button className="btn joined" style={{ marginTop: '15px' }}>
-            Joined
+          <button
+            className="btn joined"
+            style={{ marginTop: '15px' }}
+            onClick={handleUnjoinTrip}
+          >
+            Cancel
           </button>
         ) : state.isSuccess ? (
-          <button className="btn joined" style={{ marginTop: '15px' }}>
-            Joined
+          <button
+            className="btn joined"
+            style={{ marginTop: '15px' }}
+            onClick={handleUnjoinTrip}
+          >
+            Cancel
           </button>
         ) : vacantSeats === 0 ? (
           <button className="btn no-vacant" style={{ marginTop: '15px' }}>

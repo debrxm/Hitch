@@ -3,6 +3,7 @@ import 'firebase/database';
 import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/storage';
+import 'firebase/messaging';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAEwJl07UCffdmdT1DoSzwCTk6LdnFEDDE',
@@ -18,6 +19,10 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
+const messaging = firebase.messaging();
+messaging.usePublicVapidKey(
+  'BFEX8njqxk-OiiIwyOdvb08Nty3IWRahvuvZRVvSzHbQ5XAIQ4Z9Vu_B06vXreru2Tq6eDG04xICQEL37uVjMtA'
+);
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
@@ -47,6 +52,15 @@ export const createTrip = async (trip, id) => {
   const newTripRef = firestore.collection(`trips`).doc(`${id}`);
   try {
     await newTripRef.set(trip);
+    return newTripRef;
+  } catch (error) {
+    console.log('Error Creating Trip', error.message);
+  }
+};
+export const cancelTrip = async (id) => {
+  const newTripRef = firestore.collection(`trips`).doc(`${id}`);
+  try {
+    await newTripRef.delete();
     return newTripRef;
   } catch (error) {
     console.log('Error Creating Trip', error.message);
@@ -87,6 +101,25 @@ export const updateTrip = async (tripId, numberOfPassanger, user) => {
     }
   }
 };
+export const unJoinTrip = async (tripId, userId) => {
+  const tripRef = firestore.doc(`trips/${tripId}`);
+  const snapShot = await tripRef.get();
+  if (snapShot.exists) {
+    let passangers = snapShot
+      .data()
+      .passangers.filter((item, index) => item.id !== userId);
+    try {
+      await tripRef.update({
+        vacantSeats: snapShot.data().vacantSeats + 1,
+        passangers: passangers,
+      });
+      return tripRef;
+    } catch (error) {
+      console.log('error updating trip', error.message);
+    }
+  }
+};
+
 export const updateProfile = async (userId, tripId) => {
   const userRef = firestore.doc(`users/${userId}`);
   const snapShot = await userRef.get();
