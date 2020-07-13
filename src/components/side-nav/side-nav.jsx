@@ -16,13 +16,15 @@ const SideNav = ({ history, isShow, currentUser }) => {
     <div className={`${isShow ? 'active' : ''} side-nav`}>
       <ul className="links">
         <li>
-          {currentUser ? <Link to="/my-profile" className="link">
-            <img
-              className="user-icon"
-              src={currentUser.profile_pic ? currentUser.profile_pic : ''}
-            />
-            <span>{currentUser.displayName}</span>
-          </Link> : null}
+          {currentUser ? (
+            <Link to="/my-profile" className="link">
+              <img
+                className="user-icon"
+                src={currentUser.profile_pic ? currentUser.profile_pic : ''}
+              />
+              <span>{currentUser.displayName}</span>
+            </Link>
+          ) : null}
         </li>
 
         <li>
@@ -35,6 +37,11 @@ const SideNav = ({ history, isShow, currentUser }) => {
             UPCOMING TRIP
           </Link>
         </li>
+        <li>
+          <Link to="/notifications" className="link">
+            NOTIFICATIONS
+          </Link>
+        </li>
       </ul>
       {currentUser ? (
         <div className="logout" onClick={logUserOut}>
@@ -42,8 +49,8 @@ const SideNav = ({ history, isShow, currentUser }) => {
           <img src={logout} alt="Logout-Button" />
         </div>
       ) : (
-          ''
-        )}
+        ''
+      )}
     </div>
   );
 };

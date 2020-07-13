@@ -1,0 +1,60 @@
+$tablet: 850px;
+$smartphone: 500px;
+$iphoneX: 375px;
+$primaryColor: #000000;
+$secondaryColor: #ffffff;
+$shadow: 0px 3px 5px rgba(124, 124, 124, 0.747);
+
+// Mixin
+@mixin tablet {
+  @media (max-width: #{$tablet}) {
+    @content;
+  }
+}
+
+@mixin smartphone {
+  @media (max-width: #{$smartphone}) {
+    @content;
+  }
+}
+@mixin iphoneX {
+  @media (max-width: #{$iphoneX}) {
+    @content;
+  }
+}
+
+.notification-view {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px 20px;
+  border: 1px solid;
+  box-shadow: $shadow;
+  margin: 10px 0;
+  img {
+    height: 70px;
+    width: 70px;
+  }
+  .message-text {
+    width: 100%;
+    margin-left: 15px;
+    .message-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      svg {
+        margin-left: 15px;
+      }
+    }
+    h2 {
+      line-height: 15px;
+      font-size: 15px;
+      font-weight: 500;
+    }
+    span {
+      line-height: 15px;
+      font-size: 10px;
+    }
+  }
+}

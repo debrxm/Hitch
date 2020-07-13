@@ -3,12 +3,17 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
-import { updateTrip, unJoinTrip } from '../../firebase/firebase.utils';
+import {
+  updateTrip,
+  unJoinTrip,
+  addNotification,
+} from '../../firebase/firebase.utils';
 import { PostFetch, Message } from '../../components/email/message';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './trip-preview.scss';
 import { editTrip } from '../../redux/trip/trip.actions';
+import { GenerateId } from '../../utils/id-generator';
 const TripPreview = ({ trip, history, currentUser, expired, editTrip }) => {
   const {
     driver,
@@ -43,7 +48,17 @@ const TripPreview = ({ trip, history, currentUser, expired, editTrip }) => {
 
   const handleJoinTrip = async (e) => {
     e.preventDefault();
+    const notificationId = GenerateId();
+    const notification = {
+      id: notificationId,
+      info: `${currentUser.displayName} will be joining you on your trip to ${destination}`,
+      title: 'Joined Trip',
+      isRead: false,
+      time: Date.now(),
+      pic: currentUser.profile_pic,
+    };
     await updateTrip(id, 1, currentUser);
+    await addNotification(notificationId, driver.id, notification);
     const { displayName, phone, email } = currentUser;
     // const url = 'https://treep-back-end.herokuapp.com/jointrip';
     const url = 'http://localhost:8080/jointrip';
@@ -76,16 +91,17 @@ const TripPreview = ({ trip, history, currentUser, expired, editTrip }) => {
 
   const handleUnjoinTrip = async (e) => {
     e.preventDefault();
+    const notificationId = GenerateId();
+    const notification = {
+      id: notificationId,
+      info: `${currentUser.displayName} will no longer be joining you on your trip to ${destination}`,
+      title: 'Cancel Trip',
+      isRead: false,
+      time: Date.now(),
+      pic: currentUser.profile_pic,
+    };
     await unJoinTrip(id, currentUser.id);
-    toast('Trip Successfully Canceled!', {
-      position: 'top-right',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+    await addNotification(notificationId, driver.id, notification);
   };
 
   return (

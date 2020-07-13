@@ -19,10 +19,10 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
-const messaging = firebase.messaging();
-messaging.usePublicVapidKey(
-  'BFEX8njqxk-OiiIwyOdvb08Nty3IWRahvuvZRVvSzHbQ5XAIQ4Z9Vu_B06vXreru2Tq6eDG04xICQEL37uVjMtA'
-);
+// const messaging = firebase.messaging();
+// messaging.usePublicVapidKey(
+//   'BFEX8njqxk-OiiIwyOdvb08Nty3IWRahvuvZRVvSzHbQ5XAIQ4Z9Vu_B06vXreru2Tq6eDG04xICQEL37uVjMtA'
+// );
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
@@ -76,6 +76,22 @@ export const editTrip = async (trip, id) => {
   }
 };
 
+export const addNotification = async (notificationId, userId, notification) => {
+  const userRef = firestore.doc(
+    `users/${userId}/notifications/${notificationId}`
+  );
+  try {
+    await userRef.set(notification);
+  } catch (error) {}
+};
+export const updateRead = async (userId, notificationId) => {
+  const userRef = firestore.doc(
+    `users/${userId}/notifications/${notificationId}`
+  );
+  try {
+    await userRef.update({ isRead: true });
+  } catch (error) {}
+};
 export const updateTrip = async (tripId, numberOfPassanger, user) => {
   const tripRef = firestore.doc(`trips/${tripId}`);
   const userData = {

@@ -1,0 +1,33 @@
+$tablet: 850px;
+$smartphone: 500px;
+$iphoneX: 375px;
+$primaryColor: #000000;
+$secondaryColor: #ffffff;
+$shadow: 0px 3px 5px rgba(124, 124, 124, 0.747);
+
+// Mixin
+@mixin tablet {
+  @media (max-width: #{$tablet}) {
+    @content;
+  }
+}
+
+@mixin smartphone {
+  @media (max-width: #{$smartphone}) {
+    @content;
+  }
+}
+@mixin iphoneX {
+  @media (max-width: #{$iphoneX}) {
+    @content;
+  }
+}
+.notifications-container {
+  padding: 20px;
+  h1 {
+    font-size: 18px;
+  }
+  .notifications {
+    padding: 20px 0;
+  }
+}

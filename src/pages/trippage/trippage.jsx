@@ -2,10 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { selectATrip } from '../../redux/trip/trip.selectors';
-import { updateTrip } from '../../firebase/firebase.utils';
+import {
+  updateTrip,
+  unJoinTrip,
+  addNotification,
+} from '../../firebase/firebase.utils';
 import { PostFetch, Message } from '../../components/email/message';
 import { editTrip } from '../../redux/trip/trip.actions';
 import './trippage.scss';
+import { GenerateId } from '../../utils/id-generator';
 const TripPage = ({ trip, currentUser, history, editTrip }) => {
   const {
     driver,
@@ -36,8 +41,17 @@ const TripPage = ({ trip, currentUser, history, editTrip }) => {
   };
   const handleJoinTrip = async (e) => {
     e.preventDefault();
-    console.log(id, 1, currentUser);
+    const notificationId = GenerateId();
+    const notification = {
+      id: notificationId,
+      info: `${currentUser.displayName} will no longer be joining you on your trip to ${destination}`,
+      title: 'Cancel Trip',
+      isRead: false,
+      time: Date.now(),
+      pic: currentUser.profile_pic,
+    };
     await updateTrip(id, 1, currentUser);
+    await addNotification(notificationId, driver.id, notification);
     const { displayName, phone, email } = currentUser;
     const url = 'https://treep-back-end.herokuapp.com/jointrip';
     // const url = 'http://localhost:8080/jointrip';
@@ -56,6 +70,20 @@ const TripPage = ({ trip, currentUser, history, editTrip }) => {
     };
     PostFetch(url, messageToSend);
     setState({ isSuccess: true });
+  };
+  const handleUnjoinTrip = async (e) => {
+    e.preventDefault();
+    const notificationId = GenerateId();
+    const notification = {
+      id: notificationId,
+      info: `${currentUser.displayName} will no longer be joining you on your trip to ${destination}`,
+      title: 'Cancel Trip',
+      isRead: false,
+      time: Date.now(),
+      pic: currentUser.profile_pic,
+    };
+    await unJoinTrip(id, currentUser.id);
+    await addNotification(notificationId, driver.id, notification);
   };
   return (
     <div className="trip-page">
@@ -162,12 +190,20 @@ const TripPage = ({ trip, currentUser, history, editTrip }) => {
             Edit
           </button>
         ) : state.isPassanger ? (
-          <button className="btn joined" style={{ marginTop: '15px' }}>
-            Joined
+          <button
+            className="btn joined"
+            style={{ marginTop: '15px' }}
+            onClick={handleUnjoinTrip}
+          >
+            Cancel
           </button>
         ) : state.isSuccess ? (
-          <button className="btn joined" style={{ marginTop: '15px' }}>
-            Joined
+          <button
+            className="btn joined"
+            style={{ marginTop: '15px' }}
+            onClick={handleUnjoinTrip}
+          >
+            Cancel
           </button>
         ) : vacantSeats === 0 ? (
           <button className="btn no-vacant" style={{ marginTop: '15px' }}>

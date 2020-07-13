@@ -26,6 +26,7 @@ import EditTrip from './pages/edittrip/edittrip';
 import AllTripPage from './pages/alltrip/alltrip';
 import UserProfilePage from './pages/user-profile-page/user-profile-page';
 import EditProfile from './pages/editprofile/editprofile';
+import Notifications from './pages/notifications/notifications';
 
 class App extends React.Component {
   state = {
@@ -99,6 +100,14 @@ class App extends React.Component {
                 currentUser ? <UpcomingTrip /> : <Redirect to="/login" />
               }
             />
+            <Route
+              exact
+              path="/notifications"
+              render={() =>
+                currentUser ? <Notifications /> : <Redirect to="/login" />
+              }
+            />
+
             <Route
               exact
               path="/edit-trip"
