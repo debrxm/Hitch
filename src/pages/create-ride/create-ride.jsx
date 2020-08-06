@@ -1,32 +1,57 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { selectCurrentUser } from '../../redux/user/user.selectors';
-import { Link, withRouter } from 'react-router-dom';
-import FormInput from '../../components/form-input/form-input';
-import { createTrip, updateProfile } from '../../firebase/firebase.utils';
-import { GenerateId } from '../../utils/id-generator';
-import CustomButton from '../../components/custom-button/custom-button';
-import loader from '../../assets/loader.gif';
-import left from '../../assets/left.svg';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+import { selectCurrentUser } from "../../redux/user/user.selectors";
+import { Link, withRouter } from "react-router-dom";
+import FormInput from "../../components/form-input/form-input";
+import { createTrip, updateProfile } from "../../firebase/firebase.utils";
+import firebase from "../../firebase/firebase.utils";
+import { GenerateId } from "../../utils/id-generator";
+import CustomButton from "../../components/custom-button/custom-button";
+import loader from "../../assets/loader.gif";
+import left from "../../assets/left.svg";
 
-import './create-ride.scss';
-import FormSelect from '../../components/form-select/form-select';
+import "./create-ride.scss";
+import FormSelect from "../../components/form-select/form-select";
 class CreateRide extends Component {
   state = {
-    pickUpPoint: '',
-    destination: '',
-    date: '',
-    time: '',
-    carType: '',
-    numberPlate: '',
-    seatCost: '',
-    vacantSeats: '',
-    today: '',
-    description: '',
-    errorMessage: '',
+    pickUpPoint: "",
+    destination: "",
+    date: "",
+    time: "",
+    carType: "",
+    numberPlate: "",
+    seatCost: "",
+    vacantSeats: "",
+    today: "",
+    description: "",
+    errorMessage: "",
+    channelsRef: firebase.database().ref("channels"),
     isSuccess: false,
     isLoading: false,
+  };
+  addChannel = async (channelId, channelName, channelDetails) => {
+    const { channelsRef } = this.state;
+    const { id, displayName } = this.props.currentUser;
+
+    const newChannel = {
+      id: channelId,
+      name: channelName,
+      details: channelDetails,
+      createdBy: {
+        id,
+        name: displayName,
+      },
+    };
+    await channelsRef
+      .child(channelId)
+      .update(newChannel)
+      .then(() => {
+        console.log("channel added");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   handleSubmit = async (event) => {
     event.preventDefault();
@@ -54,7 +79,9 @@ class CreateRide extends Component {
           email: this.props.currentUser.email,
           age: this.props.currentUser.age,
           gender: this.props.currentUser.gender,
-          profile_pic: this.props.currentUser.profile_pic ? this.props.currentUser.profile_pic : ''
+          profile_pic: this.props.currentUser.profile_pic
+            ? this.props.currentUser.profile_pic
+            : "",
         },
         pickUpPoint: pickUpPoint.toLocaleLowerCase(),
         destination: destination.toLowerCase(),
@@ -68,34 +95,37 @@ class CreateRide extends Component {
         passangers: [],
       };
       if (
-        pickUpPoint === '' ||
-        destination === '' ||
-        date === '' ||
-        time === '' ||
-        carType === '' ||
-        numberPlate === '' ||
-        seatCost === '' ||
-        vacantSeats === '' ||
-        description === ''
+        pickUpPoint === "" ||
+        destination === "" ||
+        date === "" ||
+        time === "" ||
+        carType === "" ||
+        numberPlate === "" ||
+        seatCost === "" ||
+        vacantSeats === "" ||
+        description === ""
       ) {
         this.setState({
-          errorMessage: 'All fields are required',
+          errorMessage: "All fields are required",
           isLoading: false,
         });
         return;
       }
       await createTrip(tripData, id);
       await updateProfile(this.props.currentUser.id, id);
+      const channelName = `${pickUpPoint} to ${destination}`;
+      const channelDetails = `Trip from ${pickUpPoint} to ${destination}`;
+      this.addChannel(id, channelName, channelDetails);
       this.setState({
-        pickUpPoint: '',
-        destination: '',
-        date: '',
-        time: '',
-        carType: '',
-        numberPlate: '',
-        seatCost: '',
-        description: '',
-        vacantSeats: '',
+        pickUpPoint: "",
+        destination: "",
+        date: "",
+        time: "",
+        carType: "",
+        numberPlate: "",
+        seatCost: "",
+        description: "",
+        vacantSeats: "",
         isSuccess: true,
         errorMessage: false,
         isLoading: false,
@@ -103,7 +133,7 @@ class CreateRide extends Component {
     } catch (error) {
       this.setState({
         isLoading: !this.setState.isLoading,
-        errorMessage: 'Failed Try Again',
+        errorMessage: "Failed Try Again",
       });
     }
   };
@@ -111,16 +141,16 @@ class CreateRide extends Component {
     const { name, value } = event.target;
     this.setState({
       [name]: value,
-      errorMessage: '',
+      errorMessage: "",
     });
   };
   componentDidMount() {
     const now = new Date();
 
-    const day = ('0' + (now.getDate() + 1)).slice(-2);
-    const month = ('0' + (now.getMonth() + 1)).slice(-2);
+    const day = ("0" + (now.getDate() + 1)).slice(-2);
+    const month = ("0" + (now.getMonth() + 1)).slice(-2);
 
-    const today = now.getFullYear() + '-' + month + '-' + day;
+    const today = now.getFullYear() + "-" + month + "-" + day;
     this.setState({ today });
   }
   render() {
@@ -141,7 +171,7 @@ class CreateRide extends Component {
     } = this.state;
     return (
       <div className="create-ride">
-        {errorMessage !== '' ? (
+        {errorMessage !== "" ? (
           <span className="error">{errorMessage}</span>
         ) : null}
         {isSuccess ? (
@@ -156,43 +186,43 @@ class CreateRide extends Component {
               opt="Pick Up Point"
               handleChange={this.handleChange}
               options={[
-                'Alor Setar',
-                'Batu Pahat',
-                'Butterworth',
-                'Cukai',
-                'George Town',
-                'Johor Bahru',
-                'Ipoh',
-                'Kampong Baharu',
-                'Kampung Lemal',
-                'Kampung Sungai Pasir',
-                'Kangar',
-                'Ketereh',
-                'Klang',
-                'Kulang',
-                'Kota Bharu',
-                'Kota Kinabalu',
-                'Kuala Lipis',
-                'Kuala Lumpur',
-                'Kuala Terangganu',
-                'Kuantan',
-                'Kuching',
-                'Melaka',
-                'Lahad Datu',
-                'Miri',
-                'Muar',
-                'Pasri Mas',
-                'Pulai Chondong',
-                'Raub',
-                'Sandakan',
-                'Seramban',
-                'Seramban Garden',
-                'Shah Alam',
-                'Taiping',
-                'Tawau',
-                'Teluk intan',
-                'Tumpat',
-                'Victoria',
+                "Alor Setar",
+                "Batu Pahat",
+                "Butterworth",
+                "Cukai",
+                "George Town",
+                "Johor Bahru",
+                "Ipoh",
+                "Kampong Baharu",
+                "Kampung Lemal",
+                "Kampung Sungai Pasir",
+                "Kangar",
+                "Ketereh",
+                "Klang",
+                "Kulang",
+                "Kota Bharu",
+                "Kota Kinabalu",
+                "Kuala Lipis",
+                "Kuala Lumpur",
+                "Kuala Terangganu",
+                "Kuantan",
+                "Kuching",
+                "Melaka",
+                "Lahad Datu",
+                "Miri",
+                "Muar",
+                "Pasri Mas",
+                "Pulai Chondong",
+                "Raub",
+                "Sandakan",
+                "Seramban",
+                "Seramban Garden",
+                "Shah Alam",
+                "Taiping",
+                "Tawau",
+                "Teluk intan",
+                "Tumpat",
+                "Victoria",
               ]}
             />
             <FormSelect
@@ -201,43 +231,43 @@ class CreateRide extends Component {
               opt="Destination"
               handleChange={this.handleChange}
               options={[
-                'Alor Setar',
-                'Batu Pahat',
-                'Butterworth',
-                'Cukai',
-                'George Town',
-                'Johor Bahru',
-                'Ipoh',
-                'Kampong Baharu',
-                'Kampung Lemal',
-                'Kampung Sungai Pasir',
-                'Kangar',
-                'Ketereh',
-                'Klang',
-                'Kulang',
-                'Kota Bharu',
-                'Kota Kinabalu',
-                'Kuala Lipis',
-                'Kuala Lumpur',
-                'Kuala Terangganu',
-                'Kuantan',
-                'Kuching',
-                'Melaka',
-                'Lahad Datu',
-                'Miri',
-                'Muar',
-                'Pasri Mas',
-                'Pulai Chondong',
-                'Raub',
-                'Sandakan',
-                'Seramban',
-                'Seramban Garden',
-                'Shah Alam',
-                'Taiping',
-                'Tawau',
-                'Teluk intan',
-                'Tumpat',
-                'Victoria',
+                "Alor Setar",
+                "Batu Pahat",
+                "Butterworth",
+                "Cukai",
+                "George Town",
+                "Johor Bahru",
+                "Ipoh",
+                "Kampong Baharu",
+                "Kampung Lemal",
+                "Kampung Sungai Pasir",
+                "Kangar",
+                "Ketereh",
+                "Klang",
+                "Kulang",
+                "Kota Bharu",
+                "Kota Kinabalu",
+                "Kuala Lipis",
+                "Kuala Lumpur",
+                "Kuala Terangganu",
+                "Kuantan",
+                "Kuching",
+                "Melaka",
+                "Lahad Datu",
+                "Miri",
+                "Muar",
+                "Pasri Mas",
+                "Pulai Chondong",
+                "Raub",
+                "Sandakan",
+                "Seramban",
+                "Seramban Garden",
+                "Shah Alam",
+                "Taiping",
+                "Tawau",
+                "Teluk intan",
+                "Tumpat",
+                "Victoria",
               ]}
             />
             <FormInput
@@ -247,8 +277,8 @@ class CreateRide extends Component {
               required
               min={today}
               handleChange={this.handleChange}
-              onFocus={(e) => (e.target.type = 'date')}
-              onBlur={(e) => (e.target.type = 'text')}
+              onFocus={(e) => (e.target.type = "date")}
+              onBlur={(e) => (e.target.type = "text")}
               label="Trip Date"
             />
             <FormInput
@@ -257,8 +287,8 @@ class CreateRide extends Component {
               value={time}
               required
               handleChange={this.handleChange}
-              onFocus={(e) => (e.target.type = 'time')}
-              onBlur={(e) => (e.target.type = 'text')}
+              onFocus={(e) => (e.target.type = "time")}
+              onBlur={(e) => (e.target.type = "text")}
               label="Trip Time"
             />
             <FormInput
@@ -299,14 +329,14 @@ class CreateRide extends Component {
                 name="description"
                 value={description}
                 onChange={this.handleChange}
-                className={`${description.length ? 'expand' : null}`}
+                className={`${description.length ? "expand" : null}`}
                 cols="100"
                 rows="1"
               ></textarea>
               <label
                 className={`${
-                  description.length ? 'shrink' : ''
-                  } form-input-label`}
+                  description.length ? "shrink" : ""
+                } form-input-label`}
               >
                 Description
               </label>

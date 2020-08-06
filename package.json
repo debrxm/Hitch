@@ -20,7 +20,13 @@
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
-    "reselect": "^4.0.0"
+    "reselect": "^4.0.0",
+    "emoji-mart": "^2.11.2",
+    "md5": "^2.2.1",
+    "mime-types": "^2.1.26",
+    "moment": "^2.24.0",
+    "redux-devtools-extension": "^2.13.8",
+    "uuid": "^7.0.1"
   },
   "scripts": {
     "start": "react-scripts start",

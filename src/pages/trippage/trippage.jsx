@@ -1,17 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { selectATrip } from '../../redux/trip/trip.selectors';
+import React, { useState, useEffect } from "react";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { selectATrip } from "../../redux/trip/trip.selectors";
 import {
   updateTrip,
   unJoinTrip,
   addNotification,
-} from '../../firebase/firebase.utils';
-import { PostFetch, Message } from '../../components/email/message';
-import { editTrip } from '../../redux/trip/trip.actions';
-import './trippage.scss';
-import { GenerateId } from '../../utils/id-generator';
-const TripPage = ({ trip, currentUser, history, editTrip }) => {
+} from "../../firebase/firebase.utils";
+import { PostFetch, Message } from "../../components/email/message";
+import { editTrip } from "../../redux/trip/trip.actions";
+import { setCurrentChannel } from "../../redux/messaging/messaging.actions";
+import "./trippage.scss";
+import { GenerateId } from "../../utils/id-generator";
+const TripPage = ({
+  trip,
+  currentUser,
+  history,
+  editTrip,
+  setCurrentChannel,
+}) => {
   const {
     driver,
     pickUpPoint,
@@ -26,18 +33,22 @@ const TripPage = ({ trip, currentUser, history, editTrip }) => {
     passangers,
   } = trip[0];
   const [state, setState] = useState({
-    numberOfPassanger: '',
+    numberOfPassanger: "",
     isPassanger: false,
     isSuccess: false,
   });
   useEffect(() => {
     passangers.filter((item, index) => {
-      return item.id === currentUser.id ? setState({ isPassanger: true }) : '';
+      return item.id === currentUser.id ? setState({ isPassanger: true }) : "";
     });
   }, [currentUser.id, passangers]);
   const goToEditTripPage = () => {
     editTrip(trip[0]);
     history.push(`/edit-trip`);
+  };
+  const goToMessagingPage = () => {
+    setCurrentChannel(id);
+    history.push(`/messaging`);
   };
   const handleJoinTrip = async (e) => {
     e.preventDefault();
@@ -45,7 +56,7 @@ const TripPage = ({ trip, currentUser, history, editTrip }) => {
     const notification = {
       id: notificationId,
       info: `${currentUser.displayName} will no longer be joining you on your trip to ${destination}`,
-      title: 'Cancel Trip',
+      title: "Cancel Trip",
       isRead: false,
       time: Date.now(),
       pic: currentUser.profile_pic,
@@ -53,7 +64,7 @@ const TripPage = ({ trip, currentUser, history, editTrip }) => {
     await updateTrip(id, 1, currentUser);
     await addNotification(notificationId, driver.id, notification);
     const { displayName, phone, email } = currentUser;
-    const url = 'https://treep-back-end.herokuapp.com/jointrip';
+    const url = "https://treep-back-end.herokuapp.com/jointrip";
     // const url = 'http://localhost:8080/jointrip';
     const messageHtml = Message({
       displayName,
@@ -77,7 +88,7 @@ const TripPage = ({ trip, currentUser, history, editTrip }) => {
     const notification = {
       id: notificationId,
       info: `${currentUser.displayName} will no longer be joining you on your trip to ${destination}`,
-      title: 'Cancel Trip',
+      title: "Cancel Trip",
       isRead: false,
       time: Date.now(),
       pic: currentUser.profile_pic,
@@ -93,7 +104,7 @@ const TripPage = ({ trip, currentUser, history, editTrip }) => {
       <div className="trip-preview-info">
         <div className="trip-info">
           <div className="trip-info-head">
-            <span>{pickUpPoint ? pickUpPoint : 'Kano'}</span>
+            <span>{pickUpPoint ? pickUpPoint : "Kano"}</span>
             <span>
               <svg version="1.1" x="0px" y="0px" viewBox="0 0 512 512">
                 <g>
@@ -108,37 +119,37 @@ const TripPage = ({ trip, currentUser, history, editTrip }) => {
                 </g>
               </svg>
             </span>
-            <span>{destination ? destination : 'Lagos'}</span>
+            <span>{destination ? destination : "Lagos"}</span>
           </div>
           <div className="trip-info-date-time">
-            <span>{date ? date : '2020-05-21'}</span>
-            <span>{time ? time : '2:40'}</span>
+            <span>{date ? date : "2020-05-21"}</span>
+            <span>{time ? time : "2:40"}</span>
           </div>
           <div className="trip-owner">
             <img
               src={
                 driver.profile_pic
                   ? driver.profile_pic
-                  : 'https://user-images.githubusercontent.com/1927295/68068778-fed0c900-fd69-11e9-95c1-29dd8e8134af.png'
+                  : "https://user-images.githubusercontent.com/1927295/68068778-fed0c900-fd69-11e9-95c1-29dd8e8134af.png"
               }
               alt="driver pic"
             />
             <div className="text-content">
               <span className="driver-name">
-                <strong>Driver</strong>:{' '}
+                <strong>Driver</strong>:{" "}
                 <small>
-                  {driver.id === currentUser.id ? 'You' : driver.name}
+                  {driver.id === currentUser.id ? "You" : driver.name}
                 </small>
               </span>
               <br />
               <span className="driver-age">
-                <strong>Age</strong>:{' '}
-                <small>{driver.age ? driver.age : '-'}</small>
+                <strong>Age</strong>:{" "}
+                <small>{driver.age ? driver.age : "-"}</small>
               </span>
               <br />
               <span className="driver-email">
-                <strong>Gender</strong>:{' '}
-                <small>{driver.gender ? driver.gender : '-'}</small>
+                <strong>Gender</strong>:{" "}
+                <small>{driver.gender ? driver.gender : "-"}</small>
               </span>
               <br />
               <span className="driver-phone">
@@ -148,17 +159,17 @@ const TripPage = ({ trip, currentUser, history, editTrip }) => {
           </div>
           <br />
           <span className="vacant">
-            {' '}
+            {" "}
             {vacantSeats ? vacantSeats : 0} seat(s) available
           </span>
           <br />
           <span className="cost"> RM{seatCost ? seatCost : 0} / seat</span>
           <br />
-          <span className="car-type">{carType ? carType : 'Jeep'}</span>
+          <span className="car-type">{carType ? carType : "Jeep"}</span>
           <br />
           <span className="car-type">
-            <strong>Number Plate:</strong>{' '}
-            <small>{numberPlate ? numberPlate : 'YTW653T'}</small>
+            <strong>Number Plate:</strong>{" "}
+            <small>{numberPlate ? numberPlate : "YTW653T"}</small>
           </span>
           <br />
 
@@ -171,7 +182,7 @@ const TripPage = ({ trip, currentUser, history, editTrip }) => {
                     src={
                       item.profile_pic
                         ? item.profile_pic
-                        : 'https://p7.hiclipart.com/preview/702/518/323/passenger-computer-icons-travel-baggage-business-travel.jpg'
+                        : "https://p7.hiclipart.com/preview/702/518/323/passenger-computer-icons-travel-baggage-business-travel.jpg"
                     }
                     alt="passanger pic"
                   />
@@ -180,11 +191,18 @@ const TripPage = ({ trip, currentUser, history, editTrip }) => {
               ))}
             </ul>
           </div>
+          <button
+            className="message__btn"
+            style={{ marginTop: "15px" }}
+            onClick={goToMessagingPage}
+          >
+            Messaging
+          </button>
         </div>
         {driver.id === currentUser.id ? (
           <button
             className="btn edit"
-            style={{ marginTop: '15px' }}
+            style={{ marginTop: "15px" }}
             onClick={goToEditTripPage}
           >
             Edit
@@ -192,7 +210,7 @@ const TripPage = ({ trip, currentUser, history, editTrip }) => {
         ) : state.isPassanger ? (
           <button
             className="btn joined"
-            style={{ marginTop: '15px' }}
+            style={{ marginTop: "15px" }}
             onClick={handleUnjoinTrip}
           >
             Cancel
@@ -200,13 +218,13 @@ const TripPage = ({ trip, currentUser, history, editTrip }) => {
         ) : state.isSuccess ? (
           <button
             className="btn joined"
-            style={{ marginTop: '15px' }}
+            style={{ marginTop: "15px" }}
             onClick={handleUnjoinTrip}
           >
             Cancel
           </button>
         ) : vacantSeats === 0 ? (
-          <button className="btn no-vacant" style={{ marginTop: '15px' }}>
+          <button className="btn no-vacant" style={{ marginTop: "15px" }}>
             No Vacant Seat
           </button>
         ) : (
@@ -221,6 +239,7 @@ const TripPage = ({ trip, currentUser, history, editTrip }) => {
 };
 const mapDispatchToProps = (dispatch) => ({
   editTrip: (trip) => dispatch(editTrip(trip)),
+  setCurrentChannel: (channel) => dispatch(setCurrentChannel(channel)),
 });
 
 const mapStateToProps = (state, ownProps) => {

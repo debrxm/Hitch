@@ -5,13 +5,18 @@ import { selectEditTrip } from '../../redux/trip/trip.selectors';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { Link, withRouter } from 'react-router-dom';
 import FormInput from '../../components/form-input/form-input';
-import { editTrip, cancelTrip } from '../../firebase/firebase.utils';
+import {
+  editTrip,
+  cancelTrip,
+  driverCancelTrip,
+} from '../../firebase/firebase.utils';
 // import { GenerateId } from '../../utils/id-generator';
 import CustomButton from '../../components/custom-button/custom-button';
 import loader from '../../assets/loader.gif';
 import left from '../../assets/left.svg';
 import FormSelect from '../../components/form-select/form-select';
 import './edittrip.scss';
+import { GenerateId } from '../../utils/id-generator';
 
 class EditTrip extends Component {
   state = {
@@ -108,7 +113,21 @@ class EditTrip extends Component {
     });
   };
   handleCancelTrip = async () => {
+    const notificationId = GenerateId();
+    const notification = {
+      id: notificationId,
+      info: `${this.props.currentUser.displayName} has cancelled ${this.state.destination}`,
+      title: 'Driver Cancel Trip',
+      isRead: false,
+      time: Date.now(),
+      pic: this.props.currentUser.profile_pic,
+    };
     await cancelTrip(this.props.editTrip.id);
+    await driverCancelTrip(
+      notificationId,
+      this.props.editTrip.passangers,
+      notification
+    );
     this.props.history.push('/home');
   };
   componentDidMount() {

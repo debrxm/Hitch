@@ -1,19 +1,19 @@
-import firebase from 'firebase/app';
-import 'firebase/database';
-import 'firebase/firestore';
-import 'firebase/auth';
-import 'firebase/storage';
-import 'firebase/messaging';
+import firebase from "firebase/app";
+import "firebase/database";
+import "firebase/firestore";
+import "firebase/auth";
+import "firebase/storage";
+import "firebase/messaging";
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyAEwJl07UCffdmdT1DoSzwCTk6LdnFEDDE',
-  authDomain: 'onling-b072c.firebaseapp.com',
-  databaseURL: 'https://onling-b072c.firebaseio.com',
-  projectId: 'onling-b072c',
-  storageBucket: 'onling-b072c.appspot.com',
-  messagingSenderId: '63531467346',
-  appId: '1:63531467346:web:400aa185a592af85acd58b',
-  measurementId: 'G-M6TD4GEXY4',
+  apiKey: "AIzaSyAEwJl07UCffdmdT1DoSzwCTk6LdnFEDDE",
+  authDomain: "onling-b072c.firebaseapp.com",
+  databaseURL: "https://onling-b072c.firebaseio.com",
+  projectId: "onling-b072c",
+  storageBucket: "onling-b072c.appspot.com",
+  messagingSenderId: "63531467346",
+  appId: "1:63531467346:web:400aa185a592af85acd58b",
+  measurementId: "G-M6TD4GEXY4",
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -42,7 +42,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         ...additionalData,
       });
     } catch (error) {
-      console.log('Error creating user');
+      console.log("Error creating user");
     }
   }
   return userRef;
@@ -54,7 +54,7 @@ export const createTrip = async (trip, id) => {
     await newTripRef.set(trip);
     return newTripRef;
   } catch (error) {
-    console.log('Error Creating Trip', error.message);
+    console.log("Error Creating Trip", error.message);
   }
 };
 export const cancelTrip = async (id) => {
@@ -63,16 +63,17 @@ export const cancelTrip = async (id) => {
     await newTripRef.delete();
     return newTripRef;
   } catch (error) {
-    console.log('Error Creating Trip', error.message);
+    console.log("Error Creating Trip", error.message);
   }
 };
+
 export const editTrip = async (trip, id) => {
   const newTripRef = firestore.doc(`trips/${id}`);
   try {
     await newTripRef.update(trip);
     return newTripRef;
   } catch (error) {
-    console.log('Error Creating Trip', error.message);
+    console.log("Error Creating Trip", error.message);
   }
 };
 
@@ -113,7 +114,7 @@ export const updateTrip = async (tripId, numberOfPassanger, user) => {
       });
       return tripRef;
     } catch (error) {
-      console.log('error updating trip', error.message);
+      console.log("error updating trip", error.message);
     }
   }
 };
@@ -131,9 +132,19 @@ export const unJoinTrip = async (tripId, userId) => {
       });
       return tripRef;
     } catch (error) {
-      console.log('error updating trip', error.message);
+      console.log("error updating trip", error.message);
     }
   }
+};
+export const driverCancelTrip = async (
+  notificationId,
+  passangers,
+  notification
+) => {
+  passangers.forEach((item) => {
+    console.log(item);
+    addNotification(notificationId, item.id, notification);
+  });
 };
 
 export const updateProfile = async (userId, tripId) => {
@@ -149,7 +160,7 @@ export const updateProfile = async (userId, tripId) => {
       });
       return userRef;
     } catch (error) {
-      console.log('error updating profile', error.message);
+      console.log("error updating profile", error.message);
     }
   }
 };
@@ -179,7 +190,7 @@ export const updateProfileData = async (userId, incomingData) => {
       });
       return userRef;
     } catch (error) {
-      console.log('error updating profile', error.message);
+      console.log("error updating profile", error.message);
     }
   }
 };

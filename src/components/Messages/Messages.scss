@@ -1,0 +1,161 @@
+$tablet: 850px;
+$smartphone: 500px;
+$iphoneX: 375px;
+$primaryColor: #000000;
+$secondaryColor: #ffffff;
+$sub-color: grey;
+$main-color: black;
+$shadow: 0px 3px 5px rgba(124, 124, 124, 0.747);
+
+// Mixin
+@mixin tablet {
+  @media (max-width: #{$tablet}) {
+    @content;
+  }
+}
+
+@mixin smartphone {
+  @media (max-width: #{$smartphone}) {
+    @content;
+  }
+}
+@mixin iphoneX {
+  @media (max-width: #{$iphoneX}) {
+    @content;
+  }
+}
+@mixin shrinkLabel {
+  top: -14px;
+  font-size: 12px;
+  color: $main-color;
+}
+
+.header {
+  position: absolute;
+  top: 0;
+  padding: 20px;
+  box-shadow: $shadow;
+  .channel_name,
+  .channel_user_count {
+    white-space: nowrap;
+    text-transform: capitalize;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .channel_user_count {
+    font-size: 12px;
+  }
+  .search {
+    margin-left: 10px;
+  }
+}
+.message_view {
+  display: flex;
+  align-items: flex-start;
+  margin: 60px 10px;
+  position: relative;
+  width: 80%;
+}
+
+.message__self__view {
+  flex-direction: row-reverse;
+  margin-left: auto;
+  .message-content {
+    min-height: 50px;
+    padding-right: 10px;
+    border-right: 2px solid $sub-color;
+  }
+}
+.message__self,
+.message__other {
+}
+.sender__name {
+  margin-right: 10px;
+  font-size: 13px !important;
+  font-weight: 600;
+  position: absolute !important;
+  top: -40px;
+  right: 0;
+  text-align: right;
+}
+.timestamp {
+  font-size: 10px !important;
+  font-weight: 500;
+  position: absolute;
+  top: -20px;
+  right: 10px;
+}
+.message__other__view {
+  .sender__name {
+    top: -40px;
+    left: 10px;
+    text-align: left;
+  }
+  .timestamp {
+    top: -20px;
+    left: 10px;
+  }
+  .message-content {
+    min-height: 50px;
+    padding-left: 10px;
+    border-left: 2px solid $sub-color;
+  }
+}
+.message-container {
+  height: calc(100vh - 200px);
+  overflow-y: scroll;
+}
+.messages_container {
+  input {
+    background: none;
+    background-color: white;
+    color: $sub-color;
+    font-size: 14px;
+    // height: 20px;
+    line-height: 20px;
+    padding: 5px;
+    // padding: 10px 10px 10px 5px;
+    display: block;
+    width: 100%;
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid $sub-color;
+    // margin: 15px 0;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:focus ~ .form-input-label {
+      @include shrinkLabel();
+    }
+  }
+}
+.message__form {
+  position: absolute;
+  bottom: 0;
+  padding: 20px;
+  box-shadow: $shadow;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+
+  button {
+    font-size: 14px;
+    padding: 15px 5px;
+    margin-bottom: -2px;
+    cursor: pointer;
+    height: 100%;
+    border: none;
+    // width: 100%;
+  }
+}
+.message-content {
+  font-size: 12px;
+  margin-top: -20px;
+}
+.avatar {
+  width: 50px;
+  height: 50px;
+  margin: 0 10px;
+}

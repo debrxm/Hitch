@@ -1,32 +1,33 @@
-import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+import React from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 import {
   firestore,
   auth,
   createUserProfileDocument,
-} from './firebase/firebase.utils';
-import { setCurrentUser } from './redux/user/user.actions';
-import { setTrips } from './redux/trip/trip.actions';
-import { selectCurrentUser } from './redux/user/user.selectors';
-import Header from './components/header/header';
-import Homepage from './pages/homepage/homepage';
-import LoginAndRegister from './pages/login-register/loginAndRegister';
-import Login from './pages/login/login';
-import Register from './pages/register/register';
-import CreateRide from './pages/create-ride/create-ride';
-import FindRide from './pages/find-ride/find-ride';
-import './App.scss';
-import FoundTripPage from './pages/foundtrippage/foundtrippage';
-import UpcomingTrip from './pages/upcoming/upcoming';
-import History from './pages/history/history';
-import TripPage from './pages/trippage/trippage';
-import EditTrip from './pages/edittrip/edittrip';
-import AllTripPage from './pages/alltrip/alltrip';
-import UserProfilePage from './pages/user-profile-page/user-profile-page';
-import EditProfile from './pages/editprofile/editprofile';
-import Notifications from './pages/notifications/notifications';
+} from "./firebase/firebase.utils";
+import { setCurrentUser } from "./redux/user/user.actions";
+import { setTrips } from "./redux/trip/trip.actions";
+import { selectCurrentUser } from "./redux/user/user.selectors";
+import Header from "./components/header/header";
+import Homepage from "./pages/homepage/homepage";
+import LoginAndRegister from "./pages/login-register/loginAndRegister";
+import Login from "./pages/login/login";
+import Register from "./pages/register/register";
+import CreateRide from "./pages/create-ride/create-ride";
+import FindRide from "./pages/find-ride/find-ride";
+import "./App.scss";
+import FoundTripPage from "./pages/foundtrippage/foundtrippage";
+import UpcomingTrip from "./pages/upcoming/upcoming";
+import History from "./pages/history/history";
+import TripPage from "./pages/trippage/trippage";
+import EditTrip from "./pages/edittrip/edittrip";
+import AllTripPage from "./pages/alltrip/alltrip";
+import UserProfilePage from "./pages/user-profile-page/user-profile-page";
+import EditProfile from "./pages/editprofile/editprofile";
+import Notifications from "./pages/notifications/notifications";
+import Messages from "./components/Messages/Messages";
 
 class App extends React.Component {
   state = {
@@ -45,7 +46,7 @@ class App extends React.Component {
           });
         });
       }
-      const tripRef = firestore.collection('trips').orderBy('date', 'asc');
+      const tripRef = firestore.collection("trips").orderBy("date", "asc");
       tripRef.onSnapshot((snapshot) => {
         const tripsArr = [];
         snapshot.docs.forEach((doc) => {
@@ -105,6 +106,13 @@ class App extends React.Component {
               path="/notifications"
               render={() =>
                 currentUser ? <Notifications /> : <Redirect to="/login" />
+              }
+            />
+            <Route
+              exact
+              path="/messaging"
+              render={() =>
+                currentUser ? <Messages /> : <Redirect to="/login" />
               }
             />
 
