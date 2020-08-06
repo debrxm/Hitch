@@ -191,13 +191,15 @@ const TripPage = ({
               ))}
             </ul>
           </div>
-          <button
-            className="message__btn"
-            style={{ marginTop: "15px" }}
-            onClick={goToMessagingPage}
-          >
-            Messaging
-          </button>
+          {state.isPassanger && (
+            <button
+              className="message__btn"
+              style={{ marginTop: "15px" }}
+              onClick={goToMessagingPage}
+            >
+              Messaging
+            </button>
+          )}
         </div>
         {driver.id === currentUser.id ? (
           <button
